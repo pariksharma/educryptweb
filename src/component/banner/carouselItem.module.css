@@ -1,0 +1,65 @@
+
+.owl-carousel {
+    position: relative;
+}
+
+.owl-carousel .carousel-indicators{
+    position: absolute;
+    bottom: -20%;
+}
+
+.carousel-indicators [data-bs-target]{
+    border-radius: 50%;
+    width: 15px;
+    height: 10px;
+    background-color: gray;
+}
+
+.owl-carousel .carousel-indicators>button.active{
+    margin-top: 8px;
+    width: 35px;
+    height: 10px;
+    border-radius: 25px;
+    border: 2px solid rgb(255, 112, 3);
+    background-color: rgb(255, 112, 3) !important;
+}
+
+.carousel-indicators .active {
+    margin-top: 8px;
+    width: 35px;
+    height: 10px;
+    border-radius: 25px;
+    border: 2px solid rgb(255, 112, 3);
+    background-color: rgb(255, 112, 3) !important;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .owl-carousel .carousel-indicators{
+        bottom: -23%;
+    }
+} 
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .owl-carousel .carousel-indicators{
+        bottom: -30%;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 767px) {
+    .owl-carousel .carousel-indicators{
+        bottom: -40%;
+    }
+}
+
+@media (min-width: 490px) and (max-width: 576px) {
+    .owl-carousel .carousel-indicators{
+        bottom: -43%;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 490px) {
+    .owl-carousel .carousel-indicators{
+        /* bottom: -47%; */
+        bottom: -45px;
+    }
+}

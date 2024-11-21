@@ -1,0 +1,107 @@
+.Product_container{
+    margin-top: 60px;
+}
+
+.heading_prod{
+    display: flex;
+    justify-content: center;
+}
+
+.heading_prod,h1 {
+    font-weight: 800 !important;
+}
+
+.slick-track{
+    padding-top: 10px;
+}
+
+.slick-prev:before, .slick-next:before {
+    font-family: 'slick' !important;
+    font-size: 30px !important;
+    line-height: 1 !important;
+    opacity: .75 !important;
+    -webkit-font-smoothing: antialiased !important;
+    width: 25px !important;
+}
+
+
+.slick-prev, .slick-next {
+    font-size: 10px;
+    line-height: 0;
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: #ffffff !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    background-color: rgb(255, 112, 3) !important;
+    z-index: 99;
+}
+
+.slick-disabled {
+    font-size: 10px;
+    line-height: 0;
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: black !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    background-color: #ffffff !important;
+    background: transparent !important;
+    z-index: 99;
+}
+
+.prod_slider{
+    padding: 0 30px;
+}
+
+.ourfacultySection .card {
+    /* box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.ourfacultySection{ 
+    transition: .5s ease-in-out;
+}
+
+.ourfacultySection:hover{
+    transform: scale(1.1);
+}
+
+
+.faculty_name{
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.faculty_role{
+    font-size: 16px;
+    font-weight: 300;
+    margin: 0px;
+    color: grey;
+}
+
+.ourfacultySection .ourProImg{
+    border-radius: 5px;
+    border: 0px;
+    width: 100%;
+}
+

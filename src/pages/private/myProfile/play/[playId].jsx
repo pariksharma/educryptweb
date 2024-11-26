@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import VideoPlayerDRM from '@/component/player';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import mqtt from 'mqtt';
 import Chat from '@/component/chat/chat';
 import { decrypt, encrypt, get_token } from '@/utils/helpers';
 import { getContentMeta } from '@/services';
@@ -53,6 +54,7 @@ const PlayId = () => {
             return () => {
                 console.log("hello")
                 handleUserOffline()
+                handleUserOfflineMQTT()
                 window.removeEventListener('resize', handleResize);
             };
         }
@@ -84,6 +86,32 @@ const PlayId = () => {
           console.error("Error updating user offline status:", error);
         }
       };
+
+
+      const handleUserOfflineMQTT = () => {
+        try {
+            const brokerUrl = `wss://chat-ws.videocrypt.in:8084/mqtt`;
+            const jwt = localStorage.getItem("jwt");
+            const chatNode = localStorage.getItem("chat_node");
+            const settingNode = localStorage.getItem("setting_node");
+            const options = {
+                clientId: localStorage.getItem("user_id"),
+                username: localStorage.getItem("userName"),
+                password: jwt,
+            };
+            const MQTTClient = mqtt.connect(brokerUrl, options);
+
+            MQTTClient.unsubscribe(chatNode, (err) => {
+                if (!err) console.log(`Unsubscribed from ${chatNode}`);
+            });
+            MQTTClient.unsubscribe(settingNode, (err) => {
+                if (!err) console.log(`Unsubscribed from ${settingNode}`);
+            });
+            MQTTClient.end(() => console.log("Disconnected from MQTT."));
+        } catch (error) {
+            console.error("Error during MQTT unsubscription:", error);
+        }
+    };
 
       const convertToTimestamp = (dateString) => {
         const date = new Date(dateString);
@@ -138,6 +166,9 @@ const PlayId = () => {
                                     chat_node = {router.query.chat_node}
                                     course_id={router.query.course_id}
                                 />
+                                <p className="liveTitleHeading">
+                                  {router?.query?.title}
+                                </p>
                             </div>
                             <div className="col-md-4" style={{height: "100%"}}>
                                 <Chat 
@@ -179,9 +210,9 @@ const PlayId = () => {
                           allowFullScreen
                         />
 
-                        <img className="live_VideoImg" src="/assets/images/live_VideoImg.gif"
+                        {/* <img className="live_VideoImg" src="/assets/images/live_VideoImg.gif"
                           alt=""
-                        />
+                        /> */}
 
                         <p className="liveTitleHeading">
                           {router?.query?.title}
@@ -196,13 +227,6 @@ const PlayId = () => {
                         />
                       </div>
                     </div>
-                    {/* <div className='row mt-3'>
-                        <div className='col-md-8'>
-                        <p className="liveTitleHeading">
-                          {router?.query?.title}
-                        </p>
-                        </div>
-                    </div> */}
                   </div>
                 );
             default:

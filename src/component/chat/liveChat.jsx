@@ -11,6 +11,8 @@ import { decrypt, encrypt, get_token } from "@/utils/helpers";
 import { getContentMeta } from "@/services";
 import AudioPlayer from "./AudioPlayer";
 import EmojiPicker from "emoji-picker-react";
+import { MdAudioFile } from "react-icons/md";
+import { MdOutlinePictureAsPdf } from "react-icons/md";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -66,6 +68,37 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
     getUserData()
     handleUserStatus()
   }, [isPublic]);
+
+  useEffect(() => {
+    // Function to apply overflow style based on viewport size
+    const updateOverflowStyle = () => {
+      const currentUrl = window.location.href;
+      const viewportWidth = window.innerWidth;
+
+      // Check if the URL matches the desired page
+      if (currentUrl.includes("/private/myProfile/play/")) {
+        // Apply overflow: hidden for smaller devices (<= 1024px)
+        if (viewportWidth < 1024) {
+          document.documentElement.style.overflow = "hidden";
+        } else {
+          document.documentElement.style.overflow = "auto"; // Remove overflow: hidden for larger devices
+        }
+      } else {
+        document.documentElement.style.overflow = "auto"; // Reset for other pages
+      }
+    };
+
+    // Apply the overflow style when the component mounts
+    updateOverflowStyle();
+
+    // Listen for window resize events to update the overflow style dynamically
+    window.addEventListener("resize", updateOverflowStyle);
+
+    // Cleanup: remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", updateOverflowStyle);
+    };
+  }, []); 
 
 
 
@@ -472,7 +505,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
             >
               {chatData?.length > 0 &&
                 chatData.map((chat, index) => (
-                  chat.type != "is_chat_locked" && (
+                  chat.type != "is_chat_locked" && chat.type != "poll" && (
                     chat?.id &&
                   <div
                     key={index}
@@ -622,6 +655,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
           </div>
 
           {/* <div style={{ position: "relative", display: "inline-block" }}> */}
+          {console.log('imagePreviews', imagePreviews)}
           <input
             className="border-0 input_field form-control"
             type="text"
@@ -631,7 +665,16 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
             style={{
               // Conditional styles based on whether an image is selected
               backgroundImage: imagePreviews[0]
-                ? `url(${imagePreviews[0]})` // Show image preview if available
+                ? 
+                  type == "audio" 
+                  ?
+                    `url(/assets/images/audio.png)`
+                  :
+                    type == "pdf" 
+                    ?
+                    `url(/assets/images/pdf.png)`
+                    :
+                  `url(${imagePreviews[0]})` // Show image preview if available
                 : "none",
               backgroundColor: imagePreviews[0] ? "#F5F5F5" : "#F5F5F5", // Set transparent or light gray background when no image is selected
               backgroundSize: imagePreviews[0] ? "40px 40px" : "none", // Ensure backgroundSize is applied only if image exists
@@ -644,7 +687,9 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
 
           {/* Delete icon over the image */}
           {/* </div> */}
-          <div className="input-group-append" onClick={() => setShowPicker(!showPicker)}>
+
+          {/* {Emoji Picker} */}
+          {/* <div className="input-group-append" onClick={() => setShowPicker(!showPicker)}>
             <span
               className="input-group-text border-0 rounded-0 rounded-end"
               style={{ padding: "9px 5px", background: "#F5F5F5", cursor: 'pointer' }}
@@ -681,7 +726,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
                 </defs>
               </svg>
             </span>
-          </div>
+          </div> */}
         </div>
         <button
           className="btn p-0 text-white"

@@ -12,6 +12,7 @@ import Loader from '../loader';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import LivePoll from './LivePoll';
+import MQTTLivePoll from './MQTTLivePoll';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -41,12 +42,15 @@ const Chat = ({chat_node, course_id, video_id}) => {
   const [showChat, setShowChat] = useState(false)
   const [pdfData, setPdfData] = useState([]);
   const [locked_room, setLocked_room] = useState('');
+  const [pollData, setPollData] = useState('')
+  const [key, setKey] = useState("Live Chat");
 
   const router = useRouter()
 
   useEffect(() => {
     fetchContentMeta()
-    localStorage.setItem('chat_node', chat_node)
+    // localStorage.setItem('chat_node', chat_node)
+    // localStorage.setItem('setting_node', settingNode)
   }, [video_id])
 
   const fetchContentMeta = async () => {
@@ -72,6 +76,9 @@ const Chat = ({chat_node, course_id, video_id}) => {
             // console.log('data?.live_chat?.is_firebase', data?.live_chat?.is_firebase)
             setShowChat(true)
             setPdfData(response_contentMeta_data?.data?.pdf)
+            setPollData(response_contentMeta_data?.data?.poll)
+            localStorage.setItem('chat_node', response_contentMeta_data?.data?.live_chat?.chat_node)
+            localStorage.setItem('setting_node', response_contentMeta_data?.data?.live_chat?.setting_node)
         }
         else{
           setPublicChat(0)
@@ -99,6 +106,8 @@ const Chat = ({chat_node, course_id, video_id}) => {
     }
   };
 
+  console.log('key222', key)
+
   return (
     <>
       <Header />
@@ -106,38 +115,74 @@ const Chat = ({chat_node, course_id, video_id}) => {
         <div className="row liveChatTabs">
           <div className="card p-2 col-md-12">
             <Tabs
-              defaultActiveKey="Live Chat"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
               id="uncontrolled-tab-example"
               className="mb-3"
             >
               <Tab className="liveChat" eventKey="Live Chat" title="Live Chat">
-              {isFireBase == '1' ? 
-                showChat ? 
-                  <LiveChat
-                    chat_node = {chat_node}
-                    course_id = {course_id}
-                    isPublic = {publicChat}
-                  />
+                {key == "Live Chat" && (
+                  isFireBase == '1' ? 
+                    showChat ? 
+                      <LiveChat
+                        chat_node = {chat_node}
+                        course_id = {course_id}
+                        isPublic = {publicChat}
+                        
+                      />
+                      :
+                      <Loader />
                   :
-                  <Loader />
-              :
-              showChat ? 
-                <MQTTchat
-                  chatNode = {chatNode}
-                  settingNode = {settingNode}
-                  port = {port}
-                  listenURL = {listenURL}
-                  chat_node = {chat_node}
-                  course_id = {course_id}
-                  isPublic = {publicChat}
-                  locked_room = {locked_room}
-                />
-                :
-                <Loader />
-              }
+                  showChat ? 
+                    <MQTTchat
+                      chatNode = {chatNode}
+                      settingNode = {settingNode}
+                      port = {port}
+                      listenURL = {listenURL}
+                      chat_node = {chat_node}
+                      course_id = {course_id}
+                      isPublic = {publicChat}
+                      locked_room = {locked_room}
+                      key = {key}
+                    />
+                    :
+                    <Loader />
+                )}
               </Tab>
               <Tab eventKey="Live Poll" title="Live Poll">
-                <LivePoll />
+                {key === "Live Poll"  && (
+                  isFireBase == '1' ?
+                    showChat ?
+                      <LivePoll
+                        chatNode = {chatNode}
+                        settingNode = {settingNode}
+                        port = {port}
+                        listenURL = {listenURL}
+                        chat_node = {chat_node}
+                        course_id = {course_id}
+                        isPublic = {publicChat}
+                        locked_room = {locked_room}
+                        pollData = {pollData}
+                      />
+                      :
+                      <Loader />
+                    :
+                      showChat ?
+                        <MQTTLivePoll
+                          chatNode = {chatNode}
+                          settingNode = {settingNode}
+                          port = {port}
+                          listenURL = {listenURL}
+                          chat_node = {chat_node}
+                          course_id = {course_id}
+                          isPublic = {publicChat}
+                          locked_room = {locked_room}
+                          pollData = {pollData}
+                        />
+                      :
+                        <Loader />
+                  
+              )}
               </Tab>
               <Tab eventKey="PDF" title="PDF">
                 {pdfData?.length > 0 && pdfData.map((pdf, index) => 

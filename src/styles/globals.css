@@ -4912,7 +4912,7 @@ h4.ratingOutOff {
 }
 .ratingSection .progressBars p .progress .progress-bar {
   background: #5fb963 !important;
-  border-radius: 5px !important;
+  border-radius: px !important;
 }
 .ratingSection .progressBars p .progress.rateNegative .progress-bar {
   background: var(--btnDeafult) !important;
@@ -5333,7 +5333,6 @@ h4.userRateTitle {
   box-sizing: border-box !important;
   direction: inherit !important;
   display: block !important;
-  height: 56.5vh !important;
   max-width: 100% !important;
   overflow: auto !important;
   padding: 0 !important;
@@ -5351,15 +5350,21 @@ h4.userRateTitle {
 }
 
 .simplebar-content {
-  padding: 60px 30px !important;
+  padding: 5px 30px !important;
 }
+
+/* #uncontrolled-tab-example-tabpane-Live #Poll{
+  height: 100vh !important;
+} */
 
 .simplebar-content:after,
 .simplebar-content:before {
   content: " " !important;
   display: table !important;
 }
-
+.chat-conversation{
+  height: 100% !important;
+}
 .chat-conversation .chat-conversation-list {
   margin-bottom: 0 !important;
   margin-top: 10px !important;
@@ -5610,7 +5615,7 @@ hr.divider {
 .live-main-container {
   margin-top: 80px !important;
   padding: 0px 40px !important;
-  height: 80vh !important;
+  height: 100% !important;
 }
 
 .liveChatTabs ul.nav-tabs{
@@ -5691,14 +5696,23 @@ hr.divider {
   background-image: url('/assets/images/live_dotImg.gif') !important;
 }
 
-.liveChatTabs .card{
-  height: auto !important;
+.liveChatTabs > .card{
+  height: 77vh !important;
 }
 
 .youtubePlayer{
   border-radius: 10px !important;
+  height: 77vh !important;
 }
 
+.youtubePlayer #player{
+  height: 100% !important;
+}
+
+
+.liveChatTabs .tab-content > div{
+  height: 53vh !important;
+}
 
 /* ================= LIVE NAVBAR ENDS ==================== */
 
@@ -5707,7 +5721,7 @@ hr.divider {
 /* ====================== Live Chat Section Starts ================== */
 
 .simplebar-content.live-content {
-  height: 100vh !important;
+  height: 100% !important;
   border-bottom: 0px !important;
   overflow-x: hidden !important;
 }
@@ -6525,7 +6539,7 @@ input.shaka-range-element.shaka-seek-bar.shaka-no-propagation.shaka-show-control
 }
 
 .audio-player__top {
-  z-index: 9999 !important;
+  z-index: 0 !important;
   position: relative !important;
   padding-top: 30px !important;
 }
@@ -7004,7 +7018,7 @@ button.shaka-small-play-button.material-icons-round.shaka-tooltip {
 }
 
 .audio-player__top {
-  z-index: 9999 !important;
+  z-index: 1!important;
   position: relative !important;
   padding-top: 30px !important;
 }
@@ -7261,11 +7275,15 @@ p.video_bg_color.shaka-video-container {
 } */
 .__video_player__main___ video {
   width: 100% !important;
-  height: 98vh !important;
+  height: 100% !important;
 }
 
 .video_bg_color {
   margin-bottom: 5px !important;
+}
+
+.video_bg_color .shaka-video {
+  border-radius: 10px !important;
 }
 
 /* .shaka-controls-container .shaka-overflow-menu,
@@ -7543,6 +7561,7 @@ font-weight: 700;
   width: 100% !important;
   height: 100% !important;
   background: #000 !important;
+  border-radius: 10px !important;
 }
 
 .audio-message {
@@ -7604,15 +7623,28 @@ font-weight: 700;
   line-height: 17px !important;
 }
 
+#uncontrolled-tab-example-tabpane-PDF{
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  padding: 5px !important;
+  height: 61vh !important;
+}
+.tab-content > div:nth-child(2){
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  padding: 5px !important;
+  height: 61vh !important;
+}
+
 .pdf_img_cont img {
-  aspect-ratio: 16/9 !important;
-  object-fit: fill !important;
+  width: 56px !important;
+  height: 36px !important;
   border-radius: 2px !important;
 }
 
 .pdf-card {
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
   border: 1px solid #E8E8E8 !important;
   border-radius: 5px !important;
 }
@@ -7635,21 +7667,33 @@ h4.pdf_title {
 /* ======================== Live Poll Starts ========================= */
 
   .l_title {
-    font-size: 14px !important;
+    font-size: 10px !important;
     font-family: "Poppins", sans-serif !important;
     color: #464646 !important;
+    font-weight: 600 !important;
   }
   .j_title {
-    font-size: 12px !important;
+    font-size:var(--size-9) !important;
     font-family: "Poppins", sans-serif !important;
     color: #77838F !important;
   }
   .l_timer {
     color: #E55B5B !important;
-    font-size: 12px !important;
+    font-size: var(--size-12) !important;
   }
-  .radio-1 .progress-bar-1 {
+  .radio-1 .progress-bar-1, 
+  .radio-2 .progress-bar-1{
     background-color: #0CC292 !important;
+  }
+  .leader-btn {
+    border: 0px;
+    border-radius: 20px;
+    background-color: #FF7426;
+    padding: 5px 12px;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    font-family: "Poppins", sans-serif;
   }
 
   .checkbox-custom, .checkbox-custom-label, 
@@ -7675,14 +7719,15 @@ h4.pdf_title {
     display: -webkit-box !important;
     display: -ms-flexbox !important;
     display: flex !important;
-    height: 1rem !important;
+    height: 10px !important;
     overflow: hidden !important;
     font-size: .75rem !important;
     background-color: #e9ecef !important;
     border-radius: .25rem !important;
   }
-  .radio-1 .progress-bar-1 {
-    background-color: #0CC292 !important;
+  .radio-1 .progress-bar-1, .radio-2 .progress-bar-1 {
+    background-color: #FF7426 !important;
+    border-radius: 10px !important;
   }
   .progress-percent-1 {
     color: #7D7D7D !important;
@@ -7696,7 +7741,7 @@ h4.pdf_title {
   .checkbox-custom-label, .radio-custom-label {
     position: relative !important;
     color: #606060 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
   .radio-custom + .radio-custom-label::before {
     border-radius: 50% !important;
@@ -7706,26 +7751,26 @@ h4.pdf_title {
   .radio-custom+.radio-custom-label::before {
     content: '' !important;
     background: #fff !important;
-    border: 2px solid #ddd !important;
+    border: 1.2px solid #ddd !important;
     display: inline-block !important;
     vertical-align: middle !important;
-    width: 20px !important;
-    height: 20px !important;
+    width: 16px !important;
+    height: 16px !important;
     padding: 2px !important;
     margin-right: 10px !important;
     text-align: center !important;
   }
   .progress-percent {
     color: #7D7D7D !important;
-    font-size: 12px !important;
+    font-size: 10px !important;
     font-weight: 400 !important;
   }
 
   .radio-custom:checked + .radio-custom-label::before {
     content: "\f00c" !important;
-    font-family: 'Font Awesome 4 Free' !important;
-    color: #0CC292 !important;
-    border: 2px solid #0CC292 !important;
+    font-family: 'FontAwesome' !important;
+    color: #FF7426 !important;
+    border: 1.2px solid #FF7426 !important;
     line-height: 11px !important;
   }
   .radio-custom + .radio-custom-label::before {
@@ -7950,6 +7995,12 @@ h4.pdf_title {
   }
   .onlineCourse {
     width: 100% !important;
+  }
+  .youtubePlayer{
+    height: 100% !important;
+  }
+  .liveChatTabs .tab-content > div {
+    height: 50vh !important;
   }
 }
 

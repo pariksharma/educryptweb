@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import mqtt from 'mqtt';
 import { format } from "date-fns";
 
-const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, locked_room}) => {
+const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, locked_room, key}) => {
 
     const [client, setClient] = useState(null);
     const [connectStatus, setConnectStatus] = useState(null);
@@ -22,11 +22,48 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
       const options = {
         clientId: user_id, // Use USER_ID as the clientId
         username: userName,   // Use Name as the username
-        password: jwt
+        password: jwt,
+        clean: false,
       };
         console.log('hoptionsost', options)
         setConnectStatus("Connecting");
-        setClient(mqtt.connect(host, options));
+        const MQTTClient = mqtt.connect(host, options)
+        setClient(MQTTClient);
+        if (MQTTClient) {
+          if(!MQTTClient.subscribed) {
+            MQTTClient.on("connect", () => {
+              console.log('connect')
+              setConnectStatus("Connected");
+              MQTTClient.subscribe(chatNode, { qos: 2 }, (err) => {
+                if (err) {
+                  console.error("Subscription error:", err);
+                } else {
+                  console.log(`Subscribed to chatNode "${chatNode}"`);
+                  // getChatData();
+                }
+              });
+        
+              MQTTClient.subscribe(settingNode, { qos: 2 }, (err) => {
+                if (err) {
+                  console.error("Subscription error:", err);
+                } else {
+                  console.log(`Subscribed to settingNode "${settingNode}"`);
+                  // getUserData()
+                }
+              });
+              MQTTClient.subscribed = true;
+            });
+          }
+      
+          MQTTClient.on("error", (err) => {
+            console.error("Connection error: ", err);
+            MQTTClient.end();
+          });
+      
+          MQTTClient.on("reconnect", () => {
+            setConnectStatus("Reconnecting");
+          });
+        }
       };
 
       console.log('isPublic', isPublic)
@@ -45,37 +82,8 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
 
   useEffect(() => {
     if (client) {
-      client.on("connect", () => {
-        console.log('connect')
-        setConnectStatus("Connected");
-        client.subscribe(chatNode, { qos: 2 }, (err) => {
-          if (err) {
-            console.error("Subscription error:", err);
-          } else {
-            console.log(`Subscribed to chatNode "${chatNode}"`);
-            getChatData();
-          }
-        });
-  
-        client.subscribe(settingNode, { qos: 2 }, (err) => {
-          if (err) {
-            console.error("Subscription error:", err);
-          } else {
-            console.log(`Subscribed to settingNode "${settingNode}"`);
-            getUserData()
-          }
-        });
-  
-      });
-  
-      client.on("error", (err) => {
-        console.error("Connection error: ", err);
-        client.end();
-      });
-  
-      client.on("reconnect", () => {
-        setConnectStatus("Reconnecting");
-      });
+      getChatData()
+      getUserData()
     }
   }, [client]);
 
@@ -107,6 +115,11 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
             JSON.parse(message.toString())
           ])
           }
+          else if(JSON.parse(message.toString())?.type == "user_lock" || JSON.parse(message.toString())?.type == "user_unlock") {
+            setIsLocked(JSON.parse(message.toString())?.type)
+            setRoomLocked(JSON.parse(message.toString())?.type)
+            setLockUserId(JSON.parse(message.toString())?.locked_user_id)
+          }
           // const chats = JSON.parse(message.toString()).filter((chat) => ())
           
         }
@@ -116,7 +129,7 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
   const getUserData = () => {
     // console.log('getUserData')
     client.on("message", (settingNode, message) => {
-      // console.log(`Received message on topic "${settingNode}": ${message}`);
+      console.log(`Received message on topic "${settingNode}": ${message}`);
       // console.log('')
       if(JSON.parse(message.toString())?.type == "user_unlock" || JSON.parse(message.toString())?.type == "user_lock"){
         setIsLocked(JSON.parse(message.toString())?.type)
@@ -132,7 +145,7 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
   };
 
   const formatTime = (date) => {
-    const cr_date = new Date(date * 1000);
+    const cr_date = new Date(date);
     if (cr_date) {
       return format(cr_date, "h:mm a");
     }
@@ -165,7 +178,7 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
           console.error("Error publishing message:", err);
         } else {
           console.log(` Message published to topic "${chatNode}": ${input}`);
-        //   getChatData()
+          // getChatData()
         setInput('')
         }
       });
@@ -327,4 +340,4 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
   )
 }
 
-export default MQTTchat
+export default React.memo(MQTTchat)

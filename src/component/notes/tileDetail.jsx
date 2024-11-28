@@ -64,6 +64,10 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
         toast.error('Class is not started yet')
       }
 
+      const handleEnded = () => {
+        toast.error('Live class has been ended')
+      }
+
 
   return (
     <>
@@ -100,10 +104,13 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
                         {layer1Data.type == "pdf" && <Button1 value="Read" handleClick={() => handleRead(item)} /> }
                         {(layer1Data.type == "video" || layer1Data.type == "Video") && (
                             (item.video_type == 4 || item.video_type == 8) ?
-                                item.status == 2 ? 
+                                item.live_status == '1' ? 
                                 <Button1 value="Watch Now" handleClick={() => handleWatch(item, i)} />
                                 :
-                                <Button1 value="Watch Now" handleClick={() => handleNotStarted(item, i)} />
+                                item.live_status == '0' ?
+                                    <Button1 value="Watch Now" handleClick={() => handleNotStarted(item, i)} />
+                                    :
+                                    <Button1 value="Watch Now" handleClick={() => handleEnded(item, i)} />
                             :
                                 <Button1 value="Watch Now" handleClick={() => handleWatch(item, i)} />
                         )}
@@ -148,14 +155,17 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
                     </>
                 :
                 <>
-                {/* {console.log('7777777777777',timeValue, item)} */}
+                {/* {console.log('7777777777777', item)} */}
                     {layer1Data.type == "pdf" && <Button1 value="Read" handleClick={() => handleRead(item)} /> }
                         {(layer1Data.type == "video" || layer1Data.type == "Video") && (
                             (item.video_type == 4 || item.video_type == 8) ?
-                                item.status == 2 ? 
+                                item.live_status == '1' ? 
                                 <Button1 value="Watch Now" handleClick={() => handleWatch(item, i)} />
                                 :
-                                <Button1 value="Watch Now" handleClick={() => handleNotStarted(item, i)} />
+                                item.live_status == '0' ?
+                                    <Button1 value="Watch Now" handleClick={() => handleNotStarted(item, i)} />
+                                    :
+                                    <Button1 value="Watch Now" handleClick={() => handleEnded(item, i)} />
                             :
                                 <Button1 value="Watch Now" handleClick={() => handleWatch(item, i)} />
                         )}

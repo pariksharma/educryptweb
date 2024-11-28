@@ -13,6 +13,7 @@ import AudioPlayer from "./AudioPlayer";
 // import EmojiPicker from "emoji-picker-react";
 import { MdAudioFile } from "react-icons/md";
 import { MdOutlinePictureAsPdf } from "react-icons/md";
+import * as pdfjs from "pdfjs-dist";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -25,6 +26,8 @@ const firebaseConfig = {
   appId: "1:413835077933:web:e9ad389b4f0e203dfa0ba4",
   measurementId: "G-1527TMN738",
 };
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 // Initialize Firebase
 
@@ -100,36 +103,30 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   // Function to apply overflow style based on viewport size
-  //   const updateOverflowStyle = () => {
-  //     const currentUrl = window.location.href;
-  //     const viewportWidth = window.innerWidth;
+  const renderPdfFirstPage = async (pdfUrl) => {
+    const loadingTask = pdfjs.getDocument(pdfUrl);
+    const pdf = await loadingTask.promise;
 
-  //     // Check if the URL matches the desired page
-  //     if (currentUrl.includes("/private/myProfile/play/")) {
-  //       // Apply overflow: hidden for smaller devices (<= 1024px)
-  //       if (viewportWidth <= 1024) {
-  //         document.documentElement.style.overflow = "hidden";
-  //       } else {
-  //         document.documentElement.style.overflow = "auto"; // Remove overflow: hidden for larger devices
-  //       }
-  //     } else {
-  //       document.documentElement.style.overflow = "auto"; // Reset for other pages
-  //     }
-  //   };
+    // Get the first page
+    const page = await pdf.getPage(1);
+    const viewport = page.getViewport({ scale: 1.5 }); // Adjust scale as needed
 
-  //   // Apply the overflow style when the component mounts
-  //   updateOverflowStyle();
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
 
-  //   // Listen for window resize events to update the overflow style dynamically
-  //   window.addEventListener("resize", updateOverflowStyle);
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
 
-  //   // Cleanup: remove the event listener when the component unmounts
-  //   return () => {
-  //     window.removeEventListener("resize", updateOverflowStyle);
-  //   };
-  // }, []); 
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport,
+    };
+
+    await page.render(renderContext).promise;
+
+    // Convert the canvas to a data URL and set it as an image URL
+    return canvas.toDataURL("image/png");
+  };
 
 
 
@@ -573,63 +570,13 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
                                       onClick={() => handlePdf(chat?.message)}
                                     >
                                       {/* <FaRegFilePdf size={24} color="red" />{" "} */}
-                                      <svg
-                                        width="20"
-                                        height="40"
-                                        viewBox="0 0 20 26"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <g clip-path="url(#clip0_7165_4729)">
-                                          <path
-                                            d="M19.9941 8.01707C19.9881 7.87993 19.9349 7.7496 19.8443 7.64986C17.4561 5.1512 15.062 2.65938 12.662 0.174396C12.5591 0.0737222 12.4248 0.014775 12.2837 0.00822953C9.0443 2.37518e-05 5.80489 2.37518e-05 2.56548 0.00822953C2.20636 0.00245272 1.84981 0.0722284 1.51721 0.213374C0.482729 0.69136 0.00390625 1.56938 0.00390625 2.7346C0.00390625 6.15367 0.00390625 9.56659 0.00390625 12.9734C0.00390625 16.3801 0.00390625 19.7992 0.00390625 23.2306C0.00390625 24.843 1.04824 25.9713 2.56548 25.9734C7.52049 25.9734 12.4775 25.9734 17.4364 25.9734C18.9182 25.9734 19.998 24.8676 19.998 23.3208C20.0072 18.2278 20.0059 13.1265 19.9941 8.01707ZM6.29947 18.7995C5.83317 18.9216 5.35904 19.0086 4.88075 19.06V20.7976H3.77534C3.77534 20.7032 3.75957 20.615 3.75957 20.5247C3.75957 19.0128 3.75957 17.5009 3.75957 15.989C3.75957 15.7838 3.80095 15.671 4.02755 15.6731C4.70736 15.6731 5.39307 15.6156 6.06499 15.6936C6.40041 15.7213 6.71455 15.8756 6.94826 16.1276C7.18198 16.3797 7.31915 16.7119 7.33396 17.0619C7.38519 17.905 7.03642 18.5512 6.29947 18.7995ZM12.4335 18.5533C12.2482 19.9606 11.5014 20.6663 9.99799 20.8345C9.35496 20.8736 8.71041 20.8777 8.06696 20.8468V18.6682C8.06696 17.7635 8.06696 16.8588 8.06696 15.9562C8.06696 15.7674 8.11031 15.6751 8.30538 15.6772C9.01671 15.6772 9.73395 15.6013 10.4354 15.6772C11.8876 15.8536 12.6305 17.0024 12.4256 18.5533H12.4335ZM16.2384 16.6024H14.3606V17.7737H16.1103V18.7338H14.3507V20.7996H13.2354V15.6546H16.2305L16.2384 16.6024ZM11.2748 9.07356V2.72639L17.3832 9.07356H11.2748Z"
-                                            fill="url(#paint0_linear_7165_4729)"
-                                          />
-                                          <path
-                                            d="M8.05859 20.8509V18.6682C8.05859 17.7635 8.05859 16.8588 8.05859 15.9562C8.05859 15.7674 8.10195 15.6751 8.29702 15.6772C9.00835 15.6772 9.72559 15.6013 10.4271 15.6772C11.8911 15.8495 12.634 16.9983 12.429 18.5492C12.2438 19.9565 11.497 20.6622 9.99357 20.8304C9.34937 20.8724 8.70349 20.8792 8.05859 20.8509ZM9.19751 19.9462C9.96007 20.0037 10.6458 19.936 11.0478 19.1728C11.3867 18.5287 11.3138 17.4988 10.9157 17.0086C10.5532 16.5634 9.81032 16.3808 9.19751 16.588V19.9462Z"
-                                            fill="white"
-                                          />
-                                          <path
-                                            d="M4.87118 19.06V20.7976H3.76576C3.76576 20.7032 3.75 20.615 3.75 20.5248C3.75 19.0129 3.75 17.5009 3.75 15.989C3.75 15.7839 3.79138 15.671 4.01798 15.6731C4.69778 15.6731 5.38349 15.6157 6.05542 15.6936C6.39084 15.7213 6.70497 15.8757 6.93869 16.1277C7.1724 16.3797 7.30957 16.712 7.32438 17.0619C7.38941 17.9051 7.04064 18.5513 6.29581 18.7995C5.82757 18.9219 5.35146 19.009 4.87118 19.06ZM4.87118 18.141C5.19182 18.105 5.5089 18.0405 5.81897 17.9482C6.13424 17.8251 6.22882 17.5173 6.21305 17.1727C6.21709 17.0324 6.17493 16.8949 6.09358 16.7829C6.01222 16.671 5.89655 16.5914 5.76576 16.5573C5.52933 16.5065 5.2875 16.4886 5.04655 16.5039C4.98941 16.5039 4.88694 16.6209 4.88497 16.6886C4.8633 17.1399 4.86921 17.585 4.86921 18.141H4.87118Z"
-                                            fill="white"
-                                          />
-                                          <path
-                                            d="M16.2295 16.6023H14.3517V17.7737H16.1014V18.7338H14.3418V20.7996H13.2266V15.6545H16.2295V16.6023Z"
-                                            fill="white"
-                                          />
-                                          <path
-                                            d="M9.19531 19.9421V16.5839C9.80812 16.3788 10.551 16.5593 10.9135 17.0044C11.3076 17.4947 11.3845 18.5246 11.0456 19.1687C10.6436 19.9319 9.95787 19.9996 9.19531 19.9421Z"
-                                            fill="#9D9D9D"
-                                          />
-                                          <path
-                                            d="M4.86719 18.141C4.86719 17.585 4.86719 17.1398 4.86719 16.7049C4.86719 16.6372 4.97162 16.5203 5.02877 16.5203C5.26971 16.505 5.51155 16.5229 5.74798 16.5736C5.87877 16.6077 5.99444 16.6874 6.07579 16.7993C6.15715 16.9112 6.1993 17.0488 6.19526 17.1891C6.21694 17.5337 6.12236 17.8414 5.80118 17.9645C5.49515 18.0505 5.18272 18.1095 4.86719 18.141Z"
-                                            fill="#9D9D9D"
-                                          />
-                                        </g>
-                                        <defs>
-                                          <linearGradient
-                                            id="paint0_linear_7165_4729"
-                                            x1="1.11998"
-                                            y1="1.2376"
-                                            x2="19.5101"
-                                            y2="23.6191"
-                                            gradientUnits="userSpaceOnUse"
-                                          >
-                                            <stop stop-color="#C4C4C4" />
-                                            <stop
-                                              offset="1"
-                                              stop-color="#969696"
-                                            />
-                                          </linearGradient>
-                                          <clipPath id="clip0_7165_4729">
-                                            <rect
-                                              width="20"
-                                              height="26"
-                                              fill="white"
-                                            />
-                                          </clipPath>
-                                        </defs>
-                                      </svg>
+                                      {/* <img src={renderPdfFirstPage(chat?.message)} alt="" /> */}
+                                      <img
+                                        src="/assets/images/Pdf_imgChat.svg"
+                                        alt=""
+                                        srcset=""
+                                      />
+                                      
                                       <span className="pdf_title">
                                         {chat?.message.substring(
                                           chat?.message.lastIndexOf("/") + 1

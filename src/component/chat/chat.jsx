@@ -122,8 +122,8 @@ const Chat = ({chat_node, course_id, video_id}) => {
             >
               <Tab className="liveChat" eventKey="Live Chat" title="Live Chat">
                 {
-                  // key == "Live Chat" && (
-                  // isFireBase == '1' ? 
+                  key == "Live Chat" && (
+                  isFireBase == '1' ? 
                     showChat ? 
                       <LiveChat
                         chat_node = {chat_node}
@@ -133,22 +133,22 @@ const Chat = ({chat_node, course_id, video_id}) => {
                       />
                       :
                       <Loader />
-                  // :
-                  // showChat ? 
-                  //   <MQTTchat
-                  //     chatNode = {chatNode}
-                  //     settingNode = {settingNode}
-                  //     port = {port}
-                  //     listenURL = {listenURL}
-                  //     chat_node = {chat_node}
-                  //     course_id = {course_id}
-                  //     isPublic = {publicChat}
-                  //     locked_room = {locked_room}
-                  //     key = {key}
-                  //   />
-                  //   :
-                  //   <Loader />
-                // )
+                  :
+                  showChat ? 
+                    <MQTTchat
+                      chatNode = {chatNode}
+                      settingNode = {settingNode}
+                      port = {port}
+                      listenURL = {listenURL}
+                      chat_node = {chat_node}
+                      course_id = {course_id}
+                      isPublic = {publicChat}
+                      locked_room = {locked_room}
+                      key = {key}
+                    />
+                    :
+                    <Loader />
+                )
                 }
               </Tab>
               <Tab eventKey="Live Poll" title="Live Poll">

@@ -35,6 +35,7 @@ const Achievement = lazy(() => import("@/component/achievement/achievement"));
 
 const index = () => {
   const getInTouchRef = useRef(null);
+  const footerRef = useRef(null)
   const token = get_token()
   const [isLoggedIn, setIsLoggedIn] = useState('');
   const dispatch = useDispatch();
@@ -120,12 +121,18 @@ const index = () => {
     }
   };
 
+  const scrollToFooter = () => {
+    if(footerRef.current) {
+      footerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center'});
+    }
+  }
+
 
   return (
     <>
       <Suspense fallback={<Loader />}>
         <div className="nav_container fixed-top">
-          <DownloadSlide  scrollToGetInTouch={scrollToGetInTouch}/>
+          <DownloadSlide  scrollToGetInTouch={scrollToGetInTouch} scrollToFooter = {scrollToFooter}/>
           <Header IsHome={true} />
         </div>
         <Banner />
@@ -134,10 +141,10 @@ const index = () => {
         <OurProduct value="product" />
         <Achievement />
         <Blogs />
-        <Bottom_banner />
+        <Bottom_banner scrollToFooter = {scrollToFooter} />
         <Testimonial />
         <GetInTouch ref={getInTouchRef} />
-        <Footer />
+        <Footer ref={footerRef} />
       </Suspense>
 
       {/* <Suspense fallback={<LoaderAfterLogin />}>

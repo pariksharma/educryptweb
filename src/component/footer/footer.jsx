@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Import Font Awesome CSS
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ const appleStoreLogo = '/assets/images/appleStore.png';
 const windowsLogo = '/assets/images/windows.png';
 
 
-const Footer = () => {
+const Footer = forwardRef((props, ref) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [modalShow, setModalShow] = useState(false)
@@ -63,7 +63,7 @@ const Footer = () => {
           setModalShow(false);
         }}
       />
-      <footer className="footerSection">
+      <footer className="footerSection" ref = {ref}>
         <div className="container-fluid py-3 p-0">
           <div className="row gap-3 gap-md-0 gap-lg-5 px-5 mx-auto justify-content-start">
             <div className="col-12 col-sm-6 col-md-4 col-lg-2">
@@ -252,6 +252,6 @@ const Footer = () => {
       {/* } */}
     </>
   );
-}
+})
 
 export default Footer

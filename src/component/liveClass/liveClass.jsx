@@ -116,6 +116,7 @@ const LiveClass = ({title}) => {
             >
               <Tab eventKey="LIVE" title="LIVE">
                 <div className="row">
+                  {console.log(liveCourses)}
                   {liveCourses?.length > 0 ?
                     <Suspense fallback={<LoaderAfterLogin />}>
                       {liveCourses.map((item, index) => {

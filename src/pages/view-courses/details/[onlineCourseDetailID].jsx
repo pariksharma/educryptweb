@@ -432,9 +432,11 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
                   {tiles?.map(
                     (item, index) =>
                       // item.type !== "content" &&
-                      item.type !== "faq" &&
-                      item.type !== "overview" &&
-                      item.type !== "concept" &&
+                        (item.type !== "content" &&
+                        item.type !== "faq" &&
+                        item.type !== "overview" &&
+                        item.type !== "image" &&
+                        item.type !== "concept") &&
                       !(
                         item.type == "content" &&
                         versionData.same_content_view == 1
@@ -444,7 +446,10 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
                           title={item.tile_name}
                           key={index}
                         >
-                          {item.type != "course_combo" && (
+                          {item.type !== "course_combo" &&
+                            (item.type == "test" ||
+                              item.type == "pdf" ||
+                              item.type == "video") && (
                             <Suspense fallback={<Loader />}>
                               <Notes
                                 resetRef={resetLayerRef}

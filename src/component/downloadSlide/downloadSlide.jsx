@@ -1,16 +1,15 @@
 import React from 'react'
 
-const DownloadSlide = ({ scrollToGetInTouch }) => {
+const DownloadSlide = ({ scrollToGetInTouch, scrollToFooter }) => {
     return (
         <nav className="navbar navbar-expand top_nav">
             <div className="container-fluid">
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
+                        <li className="nav-item" onClick={scrollToFooter} style={{ cursor: 'pointer' }} >
                             <a
                                 className="nav-link active dwnld_nav"
                                 aria-current="page"
-                                href="#"
                             >
                                 <svg
                                     className="me-2"

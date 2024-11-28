@@ -2921,7 +2921,7 @@ span.quantityPrice input:nth-child(3) {
 
 .sub_name {
   font-size: var(--size-14) !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
   overflow: hidden !important;
   -webkit-line-clamp: 2 !important;
   display: -webkit-box !important;
@@ -2932,6 +2932,9 @@ span.quantityPrice input:nth-child(3) {
 
 .sub_topics {
   color: #595959 !important;
+  font-weight: 400 !important;
+  font-family: "Reddit Sans", sans-serif !important;
+  font-size: 14px !important;
 }
 
 .videoimage img {
@@ -5416,6 +5419,22 @@ hr.p_divider {
   font-family: "Inter", sans-serif !important;
 }
 
+.pdf_file{
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+  cursor: pointer !important;
+}
+.pdf_title{
+  margin-left: 5px !important;
+  font-size: var(--size-10) !important;
+  text-align: start !important;
+  font-weight: 600 !important;
+  font-family: "Inter Sans",sans-serif;
+  color: #252525 !important;
+}
+
+
 .chat-conversation .conversation-list .ctext-wrap {
   display: flex !important;
   margin-bottom: 3px !important;
@@ -5427,11 +5446,12 @@ hr.p_divider {
   padding: 12px 12px !important;
   position: relative !important;
   border-radius: 10px !important;
-  background: #f6f6f6 !important;
+  background: #FFF8F3 !important;
 }
 
 .ctext-wrap-content.left-in:after {
   content: " ";
+
   position: absolute !important;
   width: 0 !important;
   height: 0 !important;
@@ -5441,7 +5461,7 @@ hr.p_divider {
   bottom: 0px !important;
   border: 10px solid !important;
   /* border-color: transparent lightyellow lightyellow transparent; */
-  border-color: transparent #f6f6f6 #f6f6f6 transparent !important;
+  border-color: transparent #FFF8F3 #FFF8F3 transparent !important;
 }
 
 .chat-conversation .conversation-list .ctext-content {
@@ -5517,7 +5537,7 @@ hr.divider {
   align-items: center !important;
   display: flex !important;
   flex-wrap: wrap !important;
-  font-size: 12px !important;
+  font-size: var(--size-11) !important;
   font-weight: 500 !important;
   gap: 8px !important;
   font-family: "Inter", sans-serif !important;
@@ -5632,7 +5652,7 @@ hr.divider {
 .liveChatTabs ul.nav-tabs li button {
   border: 0.7px solid #E8E8E8 !important;
   border-radius: 5px !important;
-  padding: 0px !important;
+  padding: 4px 0px !important;
   width: 100% !important;
   text-align: center !important;
   display: block !important;
@@ -5642,6 +5662,10 @@ hr.divider {
 .liveChatTabs ul.nav-tabs li button.nav-link:hover {
   border: 0.7px solid #FFA573 !important;
   border-radius: 5px !important;
+}
+
+.liveChatTabs ul.nav-tabs li button.nav-link{
+  font-weight: 600 !important;
 }
 
 .liveChatTabs ul.nav-tabs li button.nav-link.active {
@@ -5753,7 +5777,7 @@ input.liveInput {
 .ctext-content-live {
   word-wrap: break-word !important;
   word-break: break-word !important;
-  font-size: var(--size-12) !important;
+  font-size: var(--size-10) !important;
   font-weight: 400 !important;
   font-family: "Inter", sans-serif !important;
   color: #383838 !important;
@@ -7284,6 +7308,7 @@ p.video_bg_color.shaka-video-container {
 
 .video_bg_color .shaka-video {
   border-radius: 10px !important;
+  height: 75vh !important;
 }
 
 /* .shaka-controls-container .shaka-overflow-menu,

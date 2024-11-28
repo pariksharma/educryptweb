@@ -10,7 +10,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { decrypt, encrypt, get_token } from "@/utils/helpers";
 import { getContentMeta } from "@/services";
 import AudioPlayer from "./AudioPlayer";
-import EmojiPicker from "emoji-picker-react";
+// import EmojiPicker from "emoji-picker-react";
 import { MdAudioFile } from "react-icons/md";
 import { MdOutlinePictureAsPdf } from "react-icons/md";
 
@@ -72,13 +72,13 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
   useEffect(() => {
     // Function to apply overflow style based on viewport size
     const updateOverflowStyle = () => {
-      const currentUrl = window.location.href;
+      const currentPath = window.location.pathname; // Get only the pathname, no query strings
       const viewportWidth = window.innerWidth;
 
       // Check if the URL matches the desired page
-      if (currentUrl.includes("/private/myProfile/play/")) {
+      if (currentPath.includes("/private/myProfile/play/")) {
         // Apply overflow: hidden for smaller devices (<= 1024px)
-        if (viewportWidth < 1024) {
+        if (viewportWidth >= 1024) {
           document.documentElement.style.overflow = "hidden";
         } else {
           document.documentElement.style.overflow = "auto"; // Remove overflow: hidden for larger devices
@@ -88,7 +88,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
       }
     };
 
-    // Apply the overflow style when the component mounts
+    // Apply the overflow style on mount
     updateOverflowStyle();
 
     // Listen for window resize events to update the overflow style dynamically
@@ -98,7 +98,38 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
     return () => {
       window.removeEventListener("resize", updateOverflowStyle);
     };
-  }, []); 
+  }, []);
+
+  // useEffect(() => {
+  //   // Function to apply overflow style based on viewport size
+  //   const updateOverflowStyle = () => {
+  //     const currentUrl = window.location.href;
+  //     const viewportWidth = window.innerWidth;
+
+  //     // Check if the URL matches the desired page
+  //     if (currentUrl.includes("/private/myProfile/play/")) {
+  //       // Apply overflow: hidden for smaller devices (<= 1024px)
+  //       if (viewportWidth <= 1024) {
+  //         document.documentElement.style.overflow = "hidden";
+  //       } else {
+  //         document.documentElement.style.overflow = "auto"; // Remove overflow: hidden for larger devices
+  //       }
+  //     } else {
+  //       document.documentElement.style.overflow = "auto"; // Reset for other pages
+  //     }
+  //   };
+
+  //   // Apply the overflow style when the component mounts
+  //   updateOverflowStyle();
+
+  //   // Listen for window resize events to update the overflow style dynamically
+  //   window.addEventListener("resize", updateOverflowStyle);
+
+  //   // Cleanup: remove the event listener when the component unmounts
+  //   return () => {
+  //     window.removeEventListener("resize", updateOverflowStyle);
+  //   };
+  // }, []); 
 
 
 
@@ -483,14 +514,14 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
     }
   };
 
-  const onEmojiClick = (emojiObject) => {
-    console.log('Selected Emoji:', emojiObject.emoji); // Logs the emoji character
-    setInput((prevInput) => prevInput + emojiObject.emoji);
-  };
+  // const onEmojiClick = (emojiObject) => {
+  //   console.log('Selected Emoji:', emojiObject.emoji); // Logs the emoji character
+  //   setInput((prevInput) => prevInput + emojiObject.emoji);
+  // };
 
   return (
     <>
-      <div className="chat-conversation" >
+      <div className="chat-conversation">
         {/* {console.log('caht', chatData)} */}
         <div className="simplebar-content-wrapper">
           <div
@@ -504,72 +535,133 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
               id="chat-conversation-list"
             >
               {chatData?.length > 0 &&
-                chatData.map((chat, index) => (
-                  chat.type != "is_chat_locked" && chat.type != "poll" && (
-                    chat?.id &&
-                  <div
-                    key={index}
-                    className={`chat-list ${
-                      userId === chat.id ? "right" : "left"
-                    }`}
-                  >
-                    <div className="conversation-list">
-                      <div className="user-chat-content">
-                        <div className="ctext-wrap">
-                          <div
-                            className={`ctext-wrap-content ${
-                              userId === chat.id ? "" : "left-in"
-                            }`}
-                          >
-                            <p className="mb-0 ctext-content-live">
-                              <h5 className="conversation-name mb-2">
-                                {chat.name}
-                              </h5>
-                              {/* {console.log('chat', chat?.message)} */}
-                              {chat?.type == "text" && chat?.message}
-                              {chat?.type == "image" && (
-                                <img src={chat?.message} className="w-100" alt="" />
-                                )}
-                                {chat?.type == "pdf" && (
-                                <div
-                                  onClick={() => handlePdf(chat?.message)}
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginTop: "10px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <FaRegFilePdf size={24} color="red" />{" "}
-                                  <span style={{ marginLeft: "10px" }}>
-                                    {chat?.message.substring(
-                                      chat?.message.lastIndexOf("/") + 1
-                                    ) || "No PDF selected"}
-                                  </span>
-                                </div>
-                                )}
-                              {chat?.type == "audio" && <AudioPlayer
-                                  audioUrl={chat?.message}
-                                  userName={user_name}
-                                  duration={chat?.date && formatTime(chat?.date)}
-                                />
-                                }
-                            </p>
+                chatData.map(
+                  (chat, index) =>
+                    chat.type != "is_chat_locked" &&
+                    chat.type != "poll" &&
+                    chat?.id && (
+                      <div
+                        key={index}
+                        className={`chat-list ${
+                          userId === chat.id ? "right" : "left"
+                        }`}
+                      >
+                        <div className="conversation-list">
+                          <div className="user-chat-content">
+                            <div className="ctext-wrap">
+                              <div
+                                className={`ctext-wrap-content ${
+                                  userId === chat.id ? "" : "left-in"
+                                }`}
+                              >
+                                <p className="mb-0 ctext-content-live">
+                                  <h5 className="conversation-name mb-2">
+                                    {chat.name}
+                                  </h5>
+                                  {/* {console.log('chat', chat?.message)} */}
+                                  {chat?.type == "text" && chat?.message}
+                                  {chat?.type == "image" && (
+                                    <img
+                                      src={chat?.message}
+                                      className="w-100"
+                                      alt=""
+                                    />
+                                  )}
+                                  {chat?.type == "pdf" && (
+                                    <div
+                                      className="pdf_file"
+                                      onClick={() => handlePdf(chat?.message)}
+                                    >
+                                      {/* <FaRegFilePdf size={24} color="red" />{" "} */}
+                                      <svg
+                                        width="20"
+                                        height="40"
+                                        viewBox="0 0 20 26"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <g clip-path="url(#clip0_7165_4729)">
+                                          <path
+                                            d="M19.9941 8.01707C19.9881 7.87993 19.9349 7.7496 19.8443 7.64986C17.4561 5.1512 15.062 2.65938 12.662 0.174396C12.5591 0.0737222 12.4248 0.014775 12.2837 0.00822953C9.0443 2.37518e-05 5.80489 2.37518e-05 2.56548 0.00822953C2.20636 0.00245272 1.84981 0.0722284 1.51721 0.213374C0.482729 0.69136 0.00390625 1.56938 0.00390625 2.7346C0.00390625 6.15367 0.00390625 9.56659 0.00390625 12.9734C0.00390625 16.3801 0.00390625 19.7992 0.00390625 23.2306C0.00390625 24.843 1.04824 25.9713 2.56548 25.9734C7.52049 25.9734 12.4775 25.9734 17.4364 25.9734C18.9182 25.9734 19.998 24.8676 19.998 23.3208C20.0072 18.2278 20.0059 13.1265 19.9941 8.01707ZM6.29947 18.7995C5.83317 18.9216 5.35904 19.0086 4.88075 19.06V20.7976H3.77534C3.77534 20.7032 3.75957 20.615 3.75957 20.5247C3.75957 19.0128 3.75957 17.5009 3.75957 15.989C3.75957 15.7838 3.80095 15.671 4.02755 15.6731C4.70736 15.6731 5.39307 15.6156 6.06499 15.6936C6.40041 15.7213 6.71455 15.8756 6.94826 16.1276C7.18198 16.3797 7.31915 16.7119 7.33396 17.0619C7.38519 17.905 7.03642 18.5512 6.29947 18.7995ZM12.4335 18.5533C12.2482 19.9606 11.5014 20.6663 9.99799 20.8345C9.35496 20.8736 8.71041 20.8777 8.06696 20.8468V18.6682C8.06696 17.7635 8.06696 16.8588 8.06696 15.9562C8.06696 15.7674 8.11031 15.6751 8.30538 15.6772C9.01671 15.6772 9.73395 15.6013 10.4354 15.6772C11.8876 15.8536 12.6305 17.0024 12.4256 18.5533H12.4335ZM16.2384 16.6024H14.3606V17.7737H16.1103V18.7338H14.3507V20.7996H13.2354V15.6546H16.2305L16.2384 16.6024ZM11.2748 9.07356V2.72639L17.3832 9.07356H11.2748Z"
+                                            fill="url(#paint0_linear_7165_4729)"
+                                          />
+                                          <path
+                                            d="M8.05859 20.8509V18.6682C8.05859 17.7635 8.05859 16.8588 8.05859 15.9562C8.05859 15.7674 8.10195 15.6751 8.29702 15.6772C9.00835 15.6772 9.72559 15.6013 10.4271 15.6772C11.8911 15.8495 12.634 16.9983 12.429 18.5492C12.2438 19.9565 11.497 20.6622 9.99357 20.8304C9.34937 20.8724 8.70349 20.8792 8.05859 20.8509ZM9.19751 19.9462C9.96007 20.0037 10.6458 19.936 11.0478 19.1728C11.3867 18.5287 11.3138 17.4988 10.9157 17.0086C10.5532 16.5634 9.81032 16.3808 9.19751 16.588V19.9462Z"
+                                            fill="white"
+                                          />
+                                          <path
+                                            d="M4.87118 19.06V20.7976H3.76576C3.76576 20.7032 3.75 20.615 3.75 20.5248C3.75 19.0129 3.75 17.5009 3.75 15.989C3.75 15.7839 3.79138 15.671 4.01798 15.6731C4.69778 15.6731 5.38349 15.6157 6.05542 15.6936C6.39084 15.7213 6.70497 15.8757 6.93869 16.1277C7.1724 16.3797 7.30957 16.712 7.32438 17.0619C7.38941 17.9051 7.04064 18.5513 6.29581 18.7995C5.82757 18.9219 5.35146 19.009 4.87118 19.06ZM4.87118 18.141C5.19182 18.105 5.5089 18.0405 5.81897 17.9482C6.13424 17.8251 6.22882 17.5173 6.21305 17.1727C6.21709 17.0324 6.17493 16.8949 6.09358 16.7829C6.01222 16.671 5.89655 16.5914 5.76576 16.5573C5.52933 16.5065 5.2875 16.4886 5.04655 16.5039C4.98941 16.5039 4.88694 16.6209 4.88497 16.6886C4.8633 17.1399 4.86921 17.585 4.86921 18.141H4.87118Z"
+                                            fill="white"
+                                          />
+                                          <path
+                                            d="M16.2295 16.6023H14.3517V17.7737H16.1014V18.7338H14.3418V20.7996H13.2266V15.6545H16.2295V16.6023Z"
+                                            fill="white"
+                                          />
+                                          <path
+                                            d="M9.19531 19.9421V16.5839C9.80812 16.3788 10.551 16.5593 10.9135 17.0044C11.3076 17.4947 11.3845 18.5246 11.0456 19.1687C10.6436 19.9319 9.95787 19.9996 9.19531 19.9421Z"
+                                            fill="#9D9D9D"
+                                          />
+                                          <path
+                                            d="M4.86719 18.141C4.86719 17.585 4.86719 17.1398 4.86719 16.7049C4.86719 16.6372 4.97162 16.5203 5.02877 16.5203C5.26971 16.505 5.51155 16.5229 5.74798 16.5736C5.87877 16.6077 5.99444 16.6874 6.07579 16.7993C6.15715 16.9112 6.1993 17.0488 6.19526 17.1891C6.21694 17.5337 6.12236 17.8414 5.80118 17.9645C5.49515 18.0505 5.18272 18.1095 4.86719 18.141Z"
+                                            fill="#9D9D9D"
+                                          />
+                                        </g>
+                                        <defs>
+                                          <linearGradient
+                                            id="paint0_linear_7165_4729"
+                                            x1="1.11998"
+                                            y1="1.2376"
+                                            x2="19.5101"
+                                            y2="23.6191"
+                                            gradientUnits="userSpaceOnUse"
+                                          >
+                                            <stop stop-color="#C4C4C4" />
+                                            <stop
+                                              offset="1"
+                                              stop-color="#969696"
+                                            />
+                                          </linearGradient>
+                                          <clipPath id="clip0_7165_4729">
+                                            <rect
+                                              width="20"
+                                              height="26"
+                                              fill="white"
+                                            />
+                                          </clipPath>
+                                        </defs>
+                                      </svg>
+                                      <span className="pdf_title">
+                                        {chat?.message.substring(
+                                          chat?.message.lastIndexOf("/") + 1
+                                        ) || "No PDF selected"}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {chat?.type == "audio" && (
+                                    <AudioPlayer
+                                      audioUrl={chat?.message}
+                                      userName={user_name}
+                                      duration={
+                                        chat?.date && formatTime(chat?.date)
+                                      }
+                                    />
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="left-time">
+                              <small
+                                className="dropdown-btn text-muted mb-0 ms-2"
+                                tabIndex="0"
+                              >
+                                {chat?.date && formatTime(chat?.date)}
+                                {/* {" "}|{" "} */}
+                                {/* <i class="bi bi-three-dots-vertical"></i> */}
+                              </small>
+                            </div>
                           </div>
                         </div>
-                        <div className="left-time">
-                          <small
-                            className="dropdown-btn text-muted mb-0 ms-2"
-                            tabIndex="0"
-                          >
-                            {chat?.date && formatTime(chat?.date)} 
-                            {/* {" "}|{" "} */}
-                            {/* <i class="bi bi-three-dots-vertical"></i> */}
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <div className="profileImg">
+                        {/* <div className="profileImg">
                       <img
                         className="UserRateImg"
                         src={
@@ -580,7 +672,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
                         alt="User profile"
                       />
                     </div> */}
-                    {/* <div className="message-content">
+                        {/* <div className="message-content">
                       <p className="name">{chat.name}</p>
                       <div className="message-text">
                         {chat?.type == "text" && <h5>{chat?.message}</h5>}
@@ -610,86 +702,85 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
                         </p>
                       </div>
                     </div> */}
-                  </div>
-                )))}
+                      </div>
+                    )
+                )}
             </ul>
           </div>
         </div>
       </div>
       {/* <pre>{JSON.stringify(chatData, null, 2)}</pre> */}
-      {isLocked != '1' &&
-      <form className="chat_input pt-1 pb-0 p-0" onSubmit={handleUpdateStatus}>
-        <div className="input-group">
-          {imagePreviews[0] && (
-            <FaTimesCircle
-              onClick={handleDeleteImage}
-              style={{
-                position: "absolute",
-                left: "60px", // Adjust position based on your layout
-                top: "2px",
-                cursor: "pointer",
-                color: "red",
-                fontSize: "18px",
-                zIndex: "9999",
-                height: "14px",
-                color: "#FF7426",
-              }}
-            />
-          )}
-          <div className="input-group-prepend">
-            <span
-              className="input-group-text border-0 rounded-0 rounded-start paperClip"
-              onClick={handleFileClick}
-              style={{ background: "#F5F5F5", cursor: 'pointer' }}
-            >
-              <ImAttachment style={{ height: "26px", color: "#969696" }} />
-            </span>
+      {isLocked != "1" && (
+        <form
+          className="chat_input pt-1 pb-0 p-0"
+          onSubmit={handleUpdateStatus}
+        >
+          <div className="input-group">
+            {imagePreviews[0] && (
+              <FaTimesCircle
+                onClick={handleDeleteImage}
+                style={{
+                  position: "absolute",
+                  left: "60px", // Adjust position based on your layout
+                  top: "2px",
+                  cursor: "pointer",
+                  color: "red",
+                  fontSize: "18px",
+                  zIndex: "9999",
+                  height: "14px",
+                  color: "#FF7426",
+                }}
+              />
+            )}
+            <div className="input-group-prepend">
+              <span
+                className="input-group-text border-0 rounded-0 rounded-start paperClip"
+                onClick={handleFileClick}
+                style={{ background: "#F5F5F5", cursor: "pointer" }}
+              >
+                <ImAttachment style={{ height: "26px", color: "#969696" }} />
+              </span>
 
+              <input
+                type="file"
+                accept=".pdf, image/png, image/jpeg, image/jpg, image/gif, audio/mpeg, audio/wav, audio/ogg"
+                onChange={handleFileChange}
+                ref={fileInputRef} // Assign ref to the file input
+                style={{ display: "none" }}
+              />
+            </div>
+
+            {/* <div style={{ position: "relative", display: "inline-block" }}> */}
+            {console.log("imagePreviews", imagePreviews)}
             <input
-              type="file"
-              accept=".pdf, image/png, image/jpeg, image/jpg, image/gif, audio/mpeg, audio/wav, audio/ogg"
-              onChange={handleFileChange}
-              ref={fileInputRef} // Assign ref to the file input
-              style={{ display: "none" }}
+              className="border-0 input_field form-control"
+              type="text"
+              value={imagePreviews[0] ? "" : input} // Disable text if image is selected
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type Something..."
+              style={{
+                // Conditional styles based on whether an image is selected
+                backgroundImage: imagePreviews[0]
+                  ? type == "audio"
+                    ? `url(/assets/images/audio.png)`
+                    : type == "pdf"
+                    ? `url(/assets/images/pdf.png)`
+                    : `url(${imagePreviews[0]})` // Show image preview if available
+                  : "none",
+                backgroundColor: imagePreviews[0] ? "#F5F5F5" : "#F5F5F5", // Set transparent or light gray background when no image is selected
+                backgroundSize: imagePreviews[0] ? "40px 40px" : "none", // Ensure backgroundSize is applied only if image exists
+                backgroundRepeat: imagePreviews[0] ? "no-repeat" : "no-repeat", // Ensure no-repeat is applied
+                backgroundPosition: imagePreviews[0] ? "left center" : "none", // Position the image on the left if it's set
+                paddingLeft: imagePreviews[0] ? "50px" : "0px", // Add padding to make space for the preview
+              }}
+              disabled={!!imagePreviews[0]} // Disable input when an image is selected
             />
-          </div>
 
-          {/* <div style={{ position: "relative", display: "inline-block" }}> */}
-          {console.log('imagePreviews', imagePreviews)}
-          <input
-            className="border-0 input_field form-control"
-            type="text"
-            value={imagePreviews[0] ? "" : input} // Disable text if image is selected
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type Something..."
-            style={{
-              // Conditional styles based on whether an image is selected
-              backgroundImage: imagePreviews[0]
-                ? 
-                  type == "audio" 
-                  ?
-                    `url(/assets/images/audio.png)`
-                  :
-                    type == "pdf" 
-                    ?
-                    `url(/assets/images/pdf.png)`
-                    :
-                  `url(${imagePreviews[0]})` // Show image preview if available
-                : "none",
-              backgroundColor: imagePreviews[0] ? "#F5F5F5" : "#F5F5F5", // Set transparent or light gray background when no image is selected
-              backgroundSize: imagePreviews[0] ? "40px 40px" : "none", // Ensure backgroundSize is applied only if image exists
-              backgroundRepeat: imagePreviews[0] ? "no-repeat" : "no-repeat", // Ensure no-repeat is applied
-              backgroundPosition: imagePreviews[0] ? "left center" : "none", // Position the image on the left if it's set
-              paddingLeft: imagePreviews[0] ? "50px" : "0px", // Add padding to make space for the preview
-            }}
-            disabled={!!imagePreviews[0]} // Disable input when an image is selected
-          />
+            {/* Delete icon over the image */}
+            {/* </div> */}
 
-          {/* Delete icon over the image */}
-          {/* </div> */}
-
-          {/* {Emoji Picker} */}
-          {/* <div className="input-group-append" onClick={() => setShowPicker(!showPicker)}>
+            {/* {Emoji Picker} */}
+            {/* <div className="input-group-append" onClick={() => setShowPicker(!showPicker)}>
             <span
               className="input-group-text border-0 rounded-0 rounded-end"
               style={{ padding: "9px 5px", background: "#F5F5F5", cursor: 'pointer' }}
@@ -727,66 +818,66 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
               </svg>
             </span>
           </div> */}
-        </div>
-        <button
-          className="btn p-0 text-white"
-          style={{ width: "15%" }}
-          type="submit"
-        >
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 52 52"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          </div>
+          <button
+            className="btn p-0 text-white"
+            style={{ width: "15%" }}
+            type="submit"
           >
-            <rect width="52" height="52" rx="10" fill="#526170" />
-            <rect
-              width="52"
-              height="52"
-              rx="10"
-              fill="url(#paint0_linear_6730_5285)"
-            />
-            <path
-              d="M17.8473 19.0156L29.4356 15.169C34.636 13.4429 37.4614 16.27 35.7416 21.4485L31.8788 32.988C29.2854 40.749 25.0268 40.749 22.4335 32.988C21.7117 30.8318 20.0053 29.1375 17.8473 28.4212C10.0535 25.8387 10.0535 21.6116 17.8473 19.0156Z"
-              fill="white"
-              stroke="white"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M20.1387 31.4476L23.4367 28.1543"
-              stroke="#F67100"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_6730_5285"
-                x1="4.97391"
-                y1="-10.9032"
-                x2="-22.5706"
-                y2="18.7151"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop offset="0.034523" stopColor="#F4780E" />
-                <stop offset="0.944296" stopColor="#EF991C" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </button>
-      </form>
-      }
-      {showPicker && <EmojiPicker 
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 52 52"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="52" height="52" rx="10" fill="#526170" />
+              <rect
+                width="52"
+                height="52"
+                rx="10"
+                fill="url(#paint0_linear_6730_5285)"
+              />
+              <path
+                d="M17.8473 19.0156L29.4356 15.169C34.636 13.4429 37.4614 16.27 35.7416 21.4485L31.8788 32.988C29.2854 40.749 25.0268 40.749 22.4335 32.988C21.7117 30.8318 20.0053 29.1375 17.8473 28.4212C10.0535 25.8387 10.0535 21.6116 17.8473 19.0156Z"
+                fill="white"
+                stroke="white"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M20.1387 31.4476L23.4367 28.1543"
+                stroke="#F67100"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <defs>
+                <linearGradient
+                  id="paint0_linear_6730_5285"
+                  x1="4.97391"
+                  y1="-10.9032"
+                  x2="-22.5706"
+                  y2="18.7151"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop offset="0.034523" stopColor="#F4780E" />
+                  <stop offset="0.944296" stopColor="#EF991C" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </button>
+        </form>
+      )}
+      {/* {showPicker && <EmojiPicker 
           onEmojiClick={onEmojiClick} 
           // searchDisabled={true}
           // skinTonesDisabled={true}
           // reactions={true}
           // suggestedEmojisMode ={false}
           emojiStyle = {'google'}
-           />}
+           />} */}
 
       {/* <div class="chat_input">
         <div class="input-group">

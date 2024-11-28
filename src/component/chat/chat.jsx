@@ -7,7 +7,7 @@ import LiveChat from './liveChat';
 import MQTTchat from './MQTTchat';
 import { decrypt, encrypt, get_token } from '@/utils/helpers';
 import { getContentMeta } from '@/services';
-import Header from '../header/header';
+// import Header from '../header/header';
 import Loader from '../loader';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -110,7 +110,7 @@ const Chat = ({chat_node, course_id, video_id}) => {
 
   return (
     <>
-      <Header />
+  
       <div className="container-fluid">
         <div className="row liveChatTabs">
           <div className="card p-2 col-md-12">
@@ -121,8 +121,9 @@ const Chat = ({chat_node, course_id, video_id}) => {
               className="mb-3"
             >
               <Tab className="liveChat" eventKey="Live Chat" title="Live Chat">
-                {key == "Live Chat" && (
-                  isFireBase == '1' ? 
+                {
+                  // key == "Live Chat" && (
+                  // isFireBase == '1' ? 
                     showChat ? 
                       <LiveChat
                         chat_node = {chat_node}
@@ -132,22 +133,23 @@ const Chat = ({chat_node, course_id, video_id}) => {
                       />
                       :
                       <Loader />
-                  :
-                  showChat ? 
-                    <MQTTchat
-                      chatNode = {chatNode}
-                      settingNode = {settingNode}
-                      port = {port}
-                      listenURL = {listenURL}
-                      chat_node = {chat_node}
-                      course_id = {course_id}
-                      isPublic = {publicChat}
-                      locked_room = {locked_room}
-                      key = {key}
-                    />
-                    :
-                    <Loader />
-                )}
+                  // :
+                  // showChat ? 
+                  //   <MQTTchat
+                  //     chatNode = {chatNode}
+                  //     settingNode = {settingNode}
+                  //     port = {port}
+                  //     listenURL = {listenURL}
+                  //     chat_node = {chat_node}
+                  //     course_id = {course_id}
+                  //     isPublic = {publicChat}
+                  //     locked_room = {locked_room}
+                  //     key = {key}
+                  //   />
+                  //   :
+                  //   <Loader />
+                // )
+                }
               </Tab>
               <Tab eventKey="Live Poll" title="Live Poll">
                 {key === "Live Poll"  && (

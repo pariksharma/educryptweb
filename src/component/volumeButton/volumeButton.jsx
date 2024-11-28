@@ -8,7 +8,7 @@ const VolumeButton = ({ player }) => {
     player.setMuted(newMutedState); // Set Shaka player mute state
     setIsMuted(newMutedState);
   };
-
+ 
   return (
     <button onClick={toggleMute} aria-label="Mute/Unmute">
       <img

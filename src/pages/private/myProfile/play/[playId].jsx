@@ -8,7 +8,7 @@ import { decrypt, encrypt, get_token } from '@/utils/helpers';
 import { getContentMeta } from '@/services';
 import { getDatabase, ref, onValue, update, push } from "firebase/database";
 import { initializeApp } from "firebase/app";
-
+import Header from '@/component/header/header';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -151,34 +151,43 @@ const PlayId = () => {
                 );
             case 8:
                 return (
+                  <>
+                    <Header />
                     <div className="container-fluid live-main-container">
-                        <div className="row" style={{height: "100%"}}>
-                            <div className="col-md-8" style={{height: "100%"}}>
-                                <VideoPlayerDRM
-                                    vdc_id={router?.query?.vdc_id}
-                                    NonDRMVideourl={router?.query?.file_url}
-                                    item={null}
-                                    title={router?.query?.title}
-                                    videoMetaData={null}
-                                    start_date={router.query.start_date}
-                                    end_date={router.query.end_date}
-                                    video_type={router.query.video_type}
-                                    chat_node = {router.query.chat_node}
-                                    course_id={router.query.course_id}
-                                />
-                                <p className="liveTitleHeading">
-                                  {router?.query?.title}
-                                </p>
-                            </div>
-                            <div className="col-md-4" style={{height: "100%"}}>
-                                <Chat 
-                                    chat_node = {router.query.chat_node}
-                                    course_id={router.query.course_id}
-                                    video_id = {router.query.video_id}
-                                />
-                            </div>
+                      <div className="row" style={{ height: "100%" }}>
+                        <div
+                          className="col-md-9 mb-5"
+                          style={{ height: "100%" }}
+                        >
+                          <VideoPlayerDRM
+                            vdc_id={router?.query?.vdc_id}
+                            NonDRMVideourl={router?.query?.file_url}
+                            item={null}
+                            title={router?.query?.title}
+                            videoMetaData={null}
+                            start_date={router.query.start_date}
+                            end_date={router.query.end_date}
+                            video_type={router.query.video_type}
+                            chat_node={router.query.chat_node}
+                            course_id={router.query.course_id}
+                          />
+                          <p className="liveTitleHeading">
+                            {router?.query?.title}
+                          </p>
                         </div>
+                        <div
+                          className="col-md-3 mb-5"
+                          style={{ height: "100%" }}
+                        >
+                          <Chat
+                            chat_node={router.query.chat_node}
+                            course_id={router.query.course_id}
+                            video_id={router.query.video_id}
+                          />
+                        </div>
+                      </div>
                     </div>
+                  </>
                 );
             case 1:
                 return (
@@ -195,39 +204,48 @@ const PlayId = () => {
                 );
             case 4:
                 return (
-                  <div className="container-fluid live-main-container">
-                    <div className="row" style={{height: "100%"}}>
-                      <div className="col-md-8 mb-5 position-relative" style={{height: "100%"}}>
-                        <iframe
-                          id="youtubePlayer"
-                          className="youtubePlayer"
-                          width="100%"
-                          height="100%"
-                          // height={windowSize.height - 10}
-                          src={`https://www.youtube.com/embed/${router?.query?.file_url}`}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
+                  <>
+                    <Header />
+                    <div className="container-fluid live-main-container">
+                      <div className="row" style={{ height: "100%" }}>
+                        <div
+                          className="col-md-9 mb-5 position-relative"
+                          style={{ height: "100%" }}
+                        >
+                          <iframe
+                            id="youtubePlayer"
+                            className="youtubePlayer"
+                            width="100%"
+                            height="100%"
+                            // height={windowSize.height - 10}
+                            src={`https://www.youtube.com/embed/${router?.query?.file_url}`}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
 
-                        {/* <img className="live_VideoImg" src="/assets/images/live_VideoImg.gif"
+                          {/* <img className="live_VideoImg" src="/assets/images/live_VideoImg.gif"
                           alt=""
                         /> */}
 
-                        <p className="liveTitleHeading">
-                          {router?.query?.title}
-                        </p>
-                      </div>
+                          <p className="liveTitleHeading">
+                            {router?.query?.title}
+                          </p>
+                        </div>
 
-                      <div className="col-md-4 mb-5" style={{height: "100%"}}>
-                        <Chat
-                          chat_node={router.query.chat_node}
-                          course_id={router.query.course_id}
-                          video_id={router.query.video_id}
-                        />
+                        <div
+                          className="col-md-3 mb-5"
+                          style={{ height: "100%" }}
+                        >
+                          <Chat
+                            chat_node={router.query.chat_node}
+                            course_id={router.query.course_id}
+                            video_id={router.query.video_id}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 );
             default:
                 return <p>No supported video format found.</p>;

@@ -3,7 +3,7 @@ import Button1 from '../buttons/button1/button1'
 import { userLoggedIn } from '@/utils/helpers'
 import { toast } from 'react-toastify'
 
-const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, handleResultTest, handleRankTest, handleUpcomingTest, i, onlineCourseAry}) => {
+const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, handleResultTest, handleRankTest, handleUpcomingTest, i, onlineCourseAry, handleConcept}) => {
 
     const [timeValue, setTimeValue] = useState('')
     const [isLogin, setIsLogin] = useState('')
@@ -68,6 +68,11 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
         toast.error('Live class has been ended')
       }
 
+      const handleView = (value, index) => {
+        if (typeof window !== "undefined") {
+            window.open(value.file_url, "_blank");
+          }
+      }
 
   return (
     <>
@@ -147,6 +152,21 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
                                 />  
                             </>    
                         }
+                        {item.file_type == '6' && 
+                            <Button1 value="View" 
+                                handleClick={() => handleView(item, i)} 
+                            />
+                        }
+                        {item.file_type == '8' && 
+                            <Button1 value="Visit" 
+                                handleClick={() => handleView(item, i)} 
+                            />
+                        }
+                        {item.file_type == '7' && 
+                            <Button1 value="Open" 
+                                handleClick={() => handleConcept(item, i)} 
+                            />
+                        }
                     </>
                     :
                     <>
@@ -213,6 +233,21 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
                                 />  
                             </>    
                         } */}
+                        {item.file_type == '6' && 
+                            <Button1 value="View" 
+                                handleClick={() => handleView(item, i)} 
+                            />
+                        }
+                        {item.file_type == '8' && 
+                            <Button1 value="Visit" 
+                                handleClick={() => handleView(item, i)} 
+                            />
+                        }
+                        {item.file_type == '7' && 
+                            <Button1 value="Open" 
+                                handleClick={() => handleConcept(item, i)} 
+                            />
+                        }
                     </>
                     :
                     <>

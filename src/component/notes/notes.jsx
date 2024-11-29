@@ -49,6 +49,8 @@ const Notes = ({
   const [tabLayer2index, setTabLayer2index] = useState('')
   const [tabLayer1Item, setTabLayer1item] = useState('')
   const [tabLayer2Item, setTabLayer2item] = useState('')
+  const [conceptData, setConceptData] = useState("");
+  const [conceptTitle, setConceptTitle] = useState('');
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight
@@ -273,6 +275,7 @@ const Notes = ({
         response_getMasterData_service.data,
         token
       );
+      console.log('response_getMasterData_Data', response_getMasterData_Data)
       if (response_getMasterData_Data.status) {
         return response_getMasterData_Data.data;
       }
@@ -366,6 +369,8 @@ const Notes = ({
     dispatch(reset_tab())
     let r_api = courseDetail?.revert_api.split("#");
     setData3Index(1)
+    setConceptData('')
+    setConceptTitle('')
     if (
       r_api[1] == 0
     ) {
@@ -392,6 +397,8 @@ const Notes = ({
     );
     let r_api = courseDetail?.revert_api.split("#");
     setData3Index(1)
+    setConceptData('')
+    setConceptTitle('')
     if (
       r_api[1] == 0
     ) {
@@ -408,6 +415,8 @@ const Notes = ({
   };
   const handleLayer1Click = (i, item) => {
     let r_api = layer1Data?.revert_api.split("#");
+    setConceptData('')
+    setConceptTitle('')
     if (
       r_api[1] == 2
     ) {
@@ -424,6 +433,8 @@ const Notes = ({
   };
 
   const handleLayer2Click = (i, item) => {
+    setConceptData('')
+    setConceptTitle('')
     setData3(i)
     setTitle3(item?.title)
     getLayer3Data(i, item.title);
@@ -580,6 +591,27 @@ const Notes = ({
     }
   };
 
+  const handleConcept = async (value, index) => {
+    try {
+      console.log('value', value)
+      setConceptTitle(value.title)
+      const response = await fetch(value?.file_url);
+      if (!response.ok) {
+        throw new Error(`Error fetching HTML: ${response.statusText}`);
+      }
+
+      // Parse the HTML content
+      const html = await response.text();
+
+      // Set the HTML content in state
+      setConceptData(html);
+    } catch (error) {
+      console.log('error found', error)
+    }
+  }
+
+  // console.log('conceptData', conceptData)
+
   return (
     <>
       {courseDetail?.meta?.list?.length > 0 ? <>
@@ -599,26 +631,28 @@ const Notes = ({
           >
             <section className={` ${checkLogin ? "px-2 " : ""}`}>
               <div className=" custom-breadcrumb">
+                {conceptData == "" &&
+                  <span
+                    ref={resetRef}
+                    className={
+                      showLayer == "layer2" ? "active-breadcrumb" : "breadcrumb"
+                    }
+                    style={{ cursor: 'pointer' }}
+                    onClick={setLayer1}
+                  >
+                    {(showLayer == "layer2" || showLayer == "layer3") &&
+                      breadcrumbData ? (
+                      <>
+                        {breadcrumbData} <i className="bi bi-chevron-right"></i>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </span>
+                }
                 <span
-                  ref={resetRef}
                   className={
-                    showLayer == "layer2" ? "active-breadcrumb" : "breadcrumb"
-                  }
-                  style={{ cursor: 'pointer' }}
-                  onClick={setLayer1}
-                >
-                  {(showLayer == "layer2" || showLayer == "layer3") &&
-                    breadcrumbData ? (
-                    <>
-                      {breadcrumbData} <i className="bi bi-chevron-right"></i>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </span>
-                <span
-                  className={
-                    showLayer == "layer3" ? "active-breadcrumb" : "breadcrumb"
+                    (showLayer == "layer3" && conceptData == "") ? "active-breadcrumb" : "breadcrumb"
                   }
                   style={{ cursor: 'pointer' }}
                   onClick={setLayer2}
@@ -631,29 +665,53 @@ const Notes = ({
                     ""
                   )}
                 </span>
+                <span
+                  className={
+                    (showLayer == "layer3" && conceptData != '') ? "active-breadcrumb" : "breadcrumb"
+                  }
+                  style={{ cursor: 'pointer' }}
+                  // onClick={setLayer2}
+                  onClick={() => {
+                    setConceptData('')
+                    setConceptTitle('')
+                  }}
+                >
+                  {showLayer == "layer3" && conceptData != '' && conceptTitle ? (
+                    <>
+                      {conceptTitle} <i className="bi bi-chevron-right"></i>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </span>
               </div>
               <div className="py-2 contentHeight">
                 {showLayer == "layer3" ? (
                   layer3Data?.list?.length > 0 &&
                     layer3updateData?.length > 0 ? (
                     <div>
-                      {layer3updateData?.map((item, i) => {
-                        return (
-                          <TileDetail
-                            item={item}
-                            layer1Data={layer1Data}
-                            handleRead={handleRead}
-                            handleWatch={handleWatch}
-                            handleTakeTest={handleTakeTest}
-                            handleResultTest={handleResultTest}
-                            handleRankTest={handleRankTest}
-                            handleUpcomingTest={handleUpcomingTest}
-                            i={i}
-                            onlineCourseAry={onlineCourseAry}
-                            key={i}
-                          />
-                        );
-                      })}
+                      {layer3updateData?.map((item, i) => ( 
+                        conceptData == "" ? (
+                            <TileDetail
+                              item={item}
+                              layer1Data={layer1Data}
+                              handleRead={handleRead}
+                              handleWatch={handleWatch}
+                              handleTakeTest={handleTakeTest}
+                              handleResultTest={handleResultTest}
+                              handleRankTest={handleRankTest}
+                              handleUpcomingTest={handleUpcomingTest}
+                              handleConcept = {handleConcept}
+                              i={i}
+                              onlineCourseAry={onlineCourseAry}
+                              key={i}
+                            />
+                          )
+                          : (
+                            <div dangerouslySetInnerHTML={{__html: conceptData}}></div>
+                          )
+                        )
+                      )}
                       {page.length > 1 && (
                         <div className="pagination_button m-2">
                           <button
@@ -714,6 +772,7 @@ const Notes = ({
                         className=" pg-tabs-description mt-3"
                         onClick={() => handleLayer2Click(i, item)}
                         key={i}
+                        style={{cursor: 'pointer'}}
                       >
                         <div className="tabs-deschovr d-flex align-items-center rounded">
                           <div
@@ -749,6 +808,21 @@ const Notes = ({
                                   {item?.count} Tests
                                 </p>
                               )}
+                              {rApi[1] == 0 && layer1Data?.type == "link" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} Links
+                                </p>
+                              )}
+                              {rApi[1] == 0 && layer1Data?.type == "image" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} images
+                                </p>
+                              )}
+                              {rApi[1] == 0 && layer1Data?.type == "concept" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} concepts
+                                </p>
+                              )}
                               {rApi[1] == 1 && layer1Data?.type == "pdf" && (
                                 <p className="m-0 sub_topics">
                                   {item?.count} Pdf's
@@ -762,6 +836,21 @@ const Notes = ({
                               {rApi[1] == 1 && layer1Data?.type == "test" && (
                                 <p className="m-0 sub_topics">
                                   {item?.count} Tests
+                                </p>
+                              )}
+                              {rApi[1] == 1 && layer1Data?.type == "link" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} Links
+                                </p>
+                              )}
+                              {rApi[1] == 1 && layer1Data?.type == "image" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} images
+                                </p>
+                              )}
+                              {rApi[1] == 1 && layer1Data?.type == "concept" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} concepts
                                 </p>
                               )}
                             </div>
@@ -784,6 +873,7 @@ const Notes = ({
                         className=" pg-tabs-description mt-3"
                         onClick={() => handleLayer1Click(i, item)}
                         key={i}
+                        style={{cursor: 'pointer'}}
                       >
                         <div className="tabs-deschovr d-flex align-items-center rounded">
                           <div
@@ -822,6 +912,21 @@ const Notes = ({
                               {rApi[1] == 2 && courseDetail?.type == "test" && (
                                 <p className="m-0 sub_topics">
                                   {item?.count} Tests
+                                </p>
+                              )}
+                              {rApi[1] == 2 && layer1Data?.type == "link" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} Links
+                                </p>
+                              )}
+                              {rApi[1] == 2 && layer1Data?.type == "image" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} images
+                                </p>
+                              )}
+                              {rApi[1] == 2 && layer1Data?.type == "concept" && (
+                                <p className="m-0 sub_topics">
+                                  {item?.count} concepts
                                 </p>
                               )}
                             </div>

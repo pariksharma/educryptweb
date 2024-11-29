@@ -616,7 +616,7 @@ const CourseOrderID = () => {
         if (courseData?.cat_type == 1) {
           router.push("/private/myProfile/ourCourse");
         } else {
-          router.push("/private/myProfile/MyCourse");
+          router.push("/private/myProfile/myCourse");
         }
       } else {
         if (

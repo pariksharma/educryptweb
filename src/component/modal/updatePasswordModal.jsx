@@ -1,7 +1,7 @@
 import { sendVerificationOtpService, updatePasswordService } from "@/services";
 import { decrypt, encrypt, get_token } from "@/utils/helpers";
 import React, { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 // import toast, { Toaster } from "react-hot-toast";
 import { ToastContainer, toast } from 'react-toastify';
@@ -281,19 +281,38 @@ const UpdatePasswordModal = (props) => {
       />
     <Modal
       {...props}
-      size={"sm"}
+      size={""}
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="profile_change_pass"
     >
-      <Modal.Header closeButton>
-        <img src={logo && logo} alt="" />
+      <Modal.Header className="border-0 p-0">
+        <img 
+          src={logo && logo} alt="" 
+          style={{width: '120px',
+            height: '40px'
+          }}
+        />
+        <Button
+            variant="link"
+            className="custom-close-button text-decoration-none"
+            onClick={props.onHide}
+          >
+            <span
+              className="p-0"
+              style={{ marginTop: "-3px" }}
+              aria-hidden="true"
+            >
+              &times;
+            </span>{" "}
+          </Button>
       </Modal.Header>
       {!resetPassScreen ? 
         !getOTP ? (
           <>
-            <h4 className="l_text">Enter mobile number to continue</h4>
+            <h4 className="l_text mt-4 mb-2">Enter mobile number to continue</h4>
             <form onSubmit={handlefetchOTP}>
-              <div className="input-group mb-1 mt-3">
+              <div className="flex-nowrap input-group mb-1 mt-3">
                 <span
                   className="bg-white input_num input-group-text"
                   id="basic-addon1"
@@ -347,10 +366,10 @@ const UpdatePasswordModal = (props) => {
           </>
         ) : (
           <form onSubmit={handleVerifyOTP}>
-            <p className="l_text">
+            <p className="mt-4 l_text">
               We've sent an OTP to your registered mobile number
               <br />
-              <div className="Otp_visibleNum d-flex align-items-center">
+              <div className="mt-3 Otp_visibleNum d-flex align-items-center">
                 <span>
                   {versionData.country == 0
                     ? `${countryCode} ${mobile} `
@@ -361,10 +380,11 @@ const UpdatePasswordModal = (props) => {
                   src="/assets/images/editNumLogo.png"
                   alt=""
                   onClick={handleEdit}
+                  style={{cursor: 'pointer'}}
                 />
               </div>
             </p>
-            <div className="otpContainer">
+            <div className="otpContainer mt-1 w-50">
               <OtpInput
                 className="d-flex gap-4 align-items-center"
                 value={OTP}
@@ -396,44 +416,46 @@ const UpdatePasswordModal = (props) => {
         )
       :
       <>
-        <p className="l_text" style={{ fontSize: "11px" }}>
+        <p className="mt-4 mb-3 l_text" style={{ fontSize: "11px" }}>
           Create password to continue
         </p>
         <form 
           onSubmit={handlePasswordSubmit} 
           autoComplete="off"
         >
-          <div className="input-group mb-3">
+          <div className="input-group mb-3 flex-nowrap">
             <input
               id="password"
               name="password"
               type={showPassword ? "text" : "password"}
-              className="forgot_password"
+              className="password border-end-0"
               placeholder="Password"
               onChange={handleResetPassword}
               autoComplete="off"
               maxLength="13"
             />
             <span
-              className="input_fp input-group-text"
+              style={{border: '1px solid #c2c2c2'}}
+              className="input_fp input-group-text border-start-0 bg-white"
               id="basic-addon2"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <Icon.EyeSlash /> : <Icon.Eye />}
             </span>
           </div>
-          <div className="input-group mb-3">
+          <div className="input-group mb-3 flex-nowrap">
             <input
               id="confirmPassword"
               name="confirmPassword"
-              className="forgot_password"
+              className="password border-end-0"
               type={showCPassword ? "text" : "password"}
               placeholder="Confirm Password"
               onChange={handleResetPassword}
               autoComplete="off"
             />
             <span
-              className="input_fp input-group-text"
+              style={{border: '1px solid #c2c2c2'}}
+              className="input_fp input-group-text bg-white border-start-0"
               id="basic-addon3"
               onClick={() => setShowCPassword(!showCPassword)}
             >

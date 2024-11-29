@@ -689,10 +689,12 @@ h4.w_Title {
   font-size: var(--size-12) !important;
   margin-bottom: 20px !important;
 }
-.UserModal .input-group {
+.UserModal .input-group ,
+.profile_change_pass .input-group{
   font-size: var(--size-13) !important;
 }
-.UserModal .mobNum {
+.UserModal .mobNum, 
+.profile_change_pass .mobNum{
   border: 1px solid #c2c2c2 !important;
   border-top-right-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
@@ -709,7 +711,8 @@ h4.w_Title {
   font-weight: 300 !important;
   line-height: 1.5 !important;
 }
-.UserModal .input_num {
+.UserModal .input_num, 
+.profile_change_pass .input_num{
   border: 1px solid #c2c2c2 !important;
   border-top-right-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
@@ -717,7 +720,8 @@ h4.w_Title {
   width: 54px !important;
   padding: 6px 5px !important;
 }
-.UserModal input.password {
+.UserModal input.password, 
+.profile_change_pass input.password{
   width: 100% !important;
   border: 1px solid #c2c2c2 !important;
   border-top-right-radius: 0px !important;
@@ -922,6 +926,7 @@ h4.w_Title {
   /* font-size: var(--size-12) !important; */
   font-family: "Reddit Sans", sans-serif !important;
   cursor: pointer !important;
+  font-weight: 700 !important;
 }
 .verifyBtn {
   margin-top: 20px !important;
@@ -5443,6 +5448,10 @@ hr.p_divider {
   height: 30px !important;
 }
 
+.profile_change_pass .modal-content{
+  padding: 20px !important;
+}
+
 
 .chat-conversation .conversation-list .ctext-wrap {
   display: flex !important;
@@ -5722,7 +5731,7 @@ hr.divider {
   display: block !important;
   background-repeat: no-repeat !important;
   background-size: contain !important;
-  top: -30px;
+  top: -34px;
 }
 
 .liveChatTabs .nav-tabs li:nth-child(2) button::after {
@@ -5744,16 +5753,14 @@ hr.divider {
 
 .liveChatTabs .tab-content > div:nth-child(1){
   height: 54vh !important;
+  /* height: calc(100% - 344px) !important; */
 }
 
-.liveChatTabs .tab-content>div:nth-child(2) {
+.liveChatTabs .tab-content > div:nth-child(2) {
   height: 61vh !important;
   overflow-y: scroll !important;
   padding: 0px 5px !important;
 }
-/* .liveChatTabs .tab-content>div:nth-child(3) {
-  height: 61vh !important;
-} */
 
 /* ================= LIVE NAVBAR ENDS ==================== */
 
@@ -7709,7 +7716,7 @@ h4.pdf_title {
 /* ======================== Live Poll Starts ========================= */
 
   .l_title {
-    font-size: 10px !important;
+    font-size: var(--size-10) !important;
     font-family: "Poppins", sans-serif !important;
     color: #464646 !important;
     font-weight: 600 !important;
@@ -7773,7 +7780,7 @@ h4.pdf_title {
   }
   .progress-percent-1 {
     color: #7D7D7D !important;
-    font-size: 12px !important;
+    font-size: var(--size-11) !important;
     font-weight: 400 !important;
   }
   .checkbox-custom, .radio-custom {

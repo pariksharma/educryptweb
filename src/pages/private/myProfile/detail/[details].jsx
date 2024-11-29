@@ -467,9 +467,7 @@ const Details = ({ value }) => {
                         (item, index) =>
                           (item.type !== "content" &&
                             item.type !== "faq" &&
-                            item.type !== "overview" &&
-                            item.type !== "image" &&
-                            item.type !== "concept") &&
+                            item.type !== "overview" ) &&
                           !(
                             item.type == "content" &&
                             versionData.same_content_view == 1
@@ -482,7 +480,10 @@ const Details = ({ value }) => {
                               {item.type !== "course_combo" &&
                                 (item.type == "test" ||
                                   item.type == "pdf" ||
-                                  item.type == "video") && (
+                                  item.type == "video" ||
+                                  item.type == "link" ||
+                                  item.type == "concept" ||
+                                  item.type == "image") && (
                                   <Suspense fallback={<Loader />}>
                                     <Notes
                                       resetRef={resetLayerRef}

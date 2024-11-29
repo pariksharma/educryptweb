@@ -143,6 +143,7 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
         response_getCourseDetail_service.data,
         token
       );
+      // console.log('response_getCourseDetail_data', response_getCourseDetail_data)
       if (response_getCourseDetail_data.status) {
         setOnlineCourseAry(response_getCourseDetail_data?.data?.course_detail);
         setRelateCourseAry(
@@ -240,7 +241,7 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
       router.push("/");
     } else {
       const back = localStorage.getItem("previousTab");
-      console.log("back",back)
+      // console.log("back",back)
       if (back) {
         router.push(back);
       } else {
@@ -403,6 +404,7 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
           </section>
           <div className="container-fluid p-0">
             <div className="course_mainContainer tabs_design__">
+              {/* {console.log('tiles', tiles)} */}
               <nav className="m-0 p-0">
                 <Tabs
                   id="controlled-tab-example2"
@@ -434,9 +436,7 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
                       // item.type !== "content" &&
                         (item.type !== "content" &&
                         item.type !== "faq" &&
-                        item.type !== "overview" &&
-                        item.type !== "image" &&
-                        item.type !== "concept") &&
+                        item.type !== "overview") &&
                       !(
                         item.type == "content" &&
                         versionData.same_content_view == 1
@@ -449,7 +449,10 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
                           {item.type !== "course_combo" &&
                             (item.type == "test" ||
                               item.type == "pdf" ||
-                              item.type == "video") && (
+                              item.type == "video" ||
+                              item.type == "link" ||
+                              item.type == "concept" ||
+                              item.type == "image") && (
                             <Suspense fallback={<Loader />}>
                               <Notes
                                 resetRef={resetLayerRef}

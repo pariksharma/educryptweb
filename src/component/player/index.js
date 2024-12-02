@@ -5,7 +5,7 @@ import { decrypt, encrypt, get_token } from "@/utils/helpers";
 import Loader from "../loader";
 import Chat from "../chat/chat";
 
-export default function VideoPlayerDRM({ vdc_id, media_id, NonDRMVideourl, item, title, videoMetaData,end_date,start_date,video_type }) {
+export default function VideoPlayerDRM({ vdc_id, media_id, NonDRMVideourl, item, title, videoMetaData,end_date,start_date,video_type, executeFunction, setTogglePlayPause, setGetCurrTime }) {
   const [source, setSource] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dType, setDType] = useState();
@@ -134,6 +134,8 @@ export default function VideoPlayerDRM({ vdc_id, media_id, NonDRMVideourl, item,
               start_date={start_date}
               end_date={end_date}
               video_type={video_type}
+              executeFunction = {executeFunction}
+              setTogglePlayPause = {setTogglePlayPause}
             />
           </div>
 

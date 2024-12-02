@@ -16,6 +16,7 @@ import {
   couponVerifyService,
   deleteAddressService,
   districtListService,
+  freeTransactionService,
   getCoupon_service,
   getCourseDetail_Service,
   getFPaymentService,
@@ -356,6 +357,31 @@ const CourseOrderID = () => {
     }
   };
 
+  const handleAddToMyCourse = async () => {
+    try {
+      if (userLoggedIn()) {
+        const formData = {
+          course_id: id,
+          parent_id:0,
+          coupon_applied:couponData?.coupon?.id 
+        };
+        const response = await freeTransactionService(encrypt(JSON.stringify(formData), token));
+        const data = decrypt(response.data, token);
+        console.log('data', data)
+        if (data.status) {
+          toast.success("Added Successfully");
+          router.push("/private/myProfile/myCourse");
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        setModalShow(true);
+      }
+    } catch (error) {
+      console.error("Error adding course:", error);
+    }
+  };
+
   const handlePayment = async () => {
     try {
       const isLoggedIn = localStorage.getItem("jwt");
@@ -369,15 +395,20 @@ const CourseOrderID = () => {
             response_getPayGateway_service.data,
             token
           );
-          // console.log(
-          //   "response_getPayGateway_data",
-          //   response_getPayGateway_data
-          // );
+          console.log(
+            "response_getPayGateway_data",
+            response_getPayGateway_data
+          );
           const payName =
             response_getPayGateway_data?.data?.rzp?.status == 1
               ? response_getPayGateway_data?.data?.rzp?.meta_name
               : response_getPayGateway_data?.data?.easebuzz?.meta_name;
-          if (response_getPayGateway_data.status) {
+              console.log('couponData', couponData?.mrp)
+          if(couponData?.mrp == 0){
+            handleAddToMyCourse()
+          }
+          else {
+            if (response_getPayGateway_data.status) {
             const razoparPayData = response_getPayGateway_data?.data?.rzp;
 
             const addressPlaced = {
@@ -393,7 +424,7 @@ const CourseOrderID = () => {
               landmark: userData.landmark,
             };
 
-            console.log(couponData);
+            console.log('couponData', couponData);
 
             const formDataPayment1 = {
               coupon_applied: couponData ? couponData?.coupon?.id : 0,
@@ -517,10 +548,11 @@ const CourseOrderID = () => {
                   : location.reload();
               }
             }
-          } else {
-            if (response_getPayGateway_data.status) {
-              showErrorToast("We're facing some technical issue");
-            } else showErrorToast(response_getPayGateway_data.false);
+            } else {
+              if (response_getPayGateway_data.status) {
+                showErrorToast("We're facing some technical issue");
+              } else showErrorToast(response_getPayGateway_data.false);
+            }
           }
         } else {
           showErrorToast(
@@ -1955,6 +1987,7 @@ const CourseOrderID = () => {
                           <td>
                             <p className="m-0 price_totalTitle">To Pay </p>
                           </td>
+                          {console.log('couponData', couponData)}
                           {courseData?.cat_type == 1
                             ? courseData.course_sp && (
                               <td>

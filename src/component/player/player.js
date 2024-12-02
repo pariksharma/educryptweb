@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import 'shaka-player/dist/controls.css';
 
 
-const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, videoMetaData, title, start_date, video_type }) => {
+const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, videoMetaData, title, start_date, video_type, executeFunction, setTogglePlayPause }) => {
 
   // console.log("NonDRMVideourl", NonDRMVideourl)
   // console.log("start_date", start_date)
@@ -30,6 +30,7 @@ const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, video
   const [cursorStyle, setCursorStyle] = useState('');
   const [Live, setLive] = useState(false);
   const currentTimeRef = useRef(currentTime); // Ref to keep track of currentTime
+  const [videoState, setVideoState] = useState("0:00");
 
   const router = useRouter()
 
@@ -356,10 +357,27 @@ const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, video
   const togglePlayPause = () => {
     if (videoRef.current.paused) {
       videoRef.current.play();
+      // setVideoState(formatTime(currentTime));
     } else {
       videoRef.current.pause();
+      const currTime = videoRef.current.currentTime;
+      // console.log('currTime', currTime)
+      setVideoState(formatTime(currTime));
     }
   };
+  
+
+  useEffect(() => {
+    // Pass the togglePlayPause function to the parent
+    console.log('currTime', videoRef.current.currentTime)
+    setTogglePlayPause(() => ({
+      action: togglePlayPause,
+      state: formatTime(videoRef.current.currentTime),
+    }));
+  }, [setTogglePlayPause, videoState]);
+
+  // console.log('currentTime', formatTime(currentTime))
+  
 
   return (
     <div ref={containerRef} id="videoContainer">

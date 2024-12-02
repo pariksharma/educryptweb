@@ -9,6 +9,7 @@ import { getContentMeta } from '@/services';
 import { getDatabase, ref, onValue, update, push } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import Header from '@/component/header/header';
+import Bookmark from '@/component/bookmark/bookmark';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -32,6 +33,10 @@ const PlayId = () => {
     });
     const [isLoading, setIsLoading] = useState(true); 
     const router = useRouter();
+    const [triggerChildFunction, setTriggerChildFunction] = useState(() => () => {});
+    const [togglePlayPause, setTogglePlayPause] = useState({});
+    // const [getCurrTime, setGetCurrTime] = useState({ action: null, state: "0:00" })
+
     // console.log("router",router)
 
     useEffect(() => {
@@ -120,6 +125,20 @@ const PlayId = () => {
         return date.getTime(); // Convert milliseconds to seconds
       };
 
+      const handleBookMark = () => {
+        console.log('toggle')
+        if (togglePlayPause.action) {
+          togglePlayPause.action(); // Call the child's function
+        }
+      }
+
+      useEffect(() => {
+        // This will run whenever `togglePlayPause` changes
+        console.log("Updated togglePlayPause:", togglePlayPause);
+      }, [togglePlayPause]);
+
+
+
     useEffect(() => {
         // Check if router is ready
         if (router.isReady) {
@@ -138,18 +157,46 @@ const PlayId = () => {
         switch (videoType) {
             case 7:
                 return (
-                    <VideoPlayerDRM
-                        vdc_id={router?.query?.vdc_id}
-                        NonDRMVideourl={router?.query?.file_url}
-                        item={null}
-                        title={router?.query?.title}
-                        videoMetaData={null}
-                        start_date={router.query.start_date}
-                        end_date={router.query.end_date}
-                        video_type={router.query.video_type}
-                        chat_node = {router.query.chat_node}
-                        course_id={router.query.course_id}
-                    />
+                  <>
+                  <Header />
+                    <div className="container-fluid live-main-container">
+                      <div className="row" style={{ height: "100%" }}>
+                        <div
+                          className="col-md-9 mb-5"
+                          style={{ height: "100%" }}
+                        >
+                        <VideoPlayerDRM
+                            vdc_id={router?.query?.vdc_id}
+                            NonDRMVideourl={router?.query?.file_url}
+                            item={null}
+                            title={router?.query?.title}
+                            videoMetaData={null}
+                            start_date={router.query.start_date}
+                            end_date={router.query.end_date}
+                            video_type={router.query.video_type}
+                            chat_node = {router.query.chat_node}
+                            course_id={router.query.course_id}
+                            executeFunction={setTriggerChildFunction}
+                            setTogglePlayPause={setTogglePlayPause} 
+                        />
+                        <p className="liveTitleHeading">
+                            {router?.query?.title}
+                          </p>
+                        </div>
+                        <div
+                          className="col-md-3 mb-5"
+                          style={{ height: "100%" }}
+                        >
+                          <Bookmark
+                            chat_node={router.query.chat_node}
+                            course_id={router.query.course_id}
+                            video_id={router.query.video_id}
+                            handleBookMark = {handleBookMark}
+                          />
+                        </div>
+                    </div>
+                  </div>
+                </>
                 );
             case 8:
                 return (

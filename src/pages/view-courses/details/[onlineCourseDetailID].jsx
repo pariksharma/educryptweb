@@ -206,9 +206,8 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
       if (userLoggedIn()) {
         const formData = {
           course_id: id,
-          pay_via: 3,
-          quantity: 1,
-          type: 1,
+          parent_id:0,
+          coupon_applied:0
         };
         const response = await freeTransactionService(encrypt(JSON.stringify(formData), token));
         const data = decrypt(response.data, token);

@@ -16,7 +16,7 @@ import Script from "next/script";
 import ThankyouModal from "../modal/thankyouModal";
 import LoginModal from "../modal/loginModal";
 
-const Card4 = ({ value, titleName, handleDetail, titleId, setGetCourse }) => {
+const Card4 = ({ value, titleName, handleDetail, titleId, setGetCourse, handleAddToMyCourse }) => {
   const [validityShow, setValidityShow] = useState(false);
   const [isToasterOpen, setIsToasterOpen] = useState(false);
   const [thankYouModalShow, setThankYouModalShow] = useState(false);
@@ -513,43 +513,49 @@ const Card4 = ({ value, titleName, handleDetail, titleId, setGetCourse }) => {
           </>
         )}
           {/* {console.log(value)} */}
-          {value.is_purchased != 0 ? (
+          {(value.is_purchased != 0 ? (
             <>
               {!router.pathname.startsWith("/private/myProfile/detail") &&
               ((!router.pathname.startsWith("/private/myProfile/detail") &&
                 value.mrp != 0) ||
                 titleName != "detail") ? (
-                <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
-                  <Button1
-                    value={
-                      value?.is_purchased == 1
-                        ? "View Content"
-                        : value?.purchase_date != ""
-                        ? "View Content"
-                        : "View Detail"
-                    }
-                    data={true}
-                    handleClick={() => handleDetail(value)}
-                  />
-                  {value?.prices?.length > 0 && (
-                    <Button2
-                      value="Extend Validity"
+                  <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
+                    <Button1
+                      value={
+                        value?.is_purchased == 1
+                          ? "View Content"
+                          : value?.purchase_date != ""
+                          ? "View Content"
+                          : "View Detail"
+                      }
                       data={true}
-                      handleClick={() => handleExtendValidity(value)}
+                      handleClick={() => handleDetail(value)}
                     />
-                  )}
-                </div>
-              ) : (
+                    {value?.prices?.length > 0 && (
+                      <Button2
+                        value="Extend Validity"
+                        data={true}
+                        handleClick={() => handleExtendValidity(value)}
+                      />
+                    )}
+                  </div>
+                ) : (
                 <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
                   <Button1 widthFull={true} value="Purchased" />
                 </div>
               )}
             </>
           ) : (
+            value.mrp != '0' ? 
             <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
               <Button1 widthFull={true} value={"Buy Now"} handleClick={handleBuy} />
             </div>
-          )}
+            :
+            <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
+            <Button1 widthFull={true} value={"Add to My Course"} handleClick={handleAddToMyCourse} />
+          </div>
+          ))          
+        }
         </>
         }
         </div>

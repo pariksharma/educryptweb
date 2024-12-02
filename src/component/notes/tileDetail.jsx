@@ -158,7 +158,7 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
                             />
                         }
                         {item.file_type == '8' && 
-                            <Button1 value="Visit" 
+                            <Button1 value="Open" 
                                 handleClick={() => handleView(item, i)} 
                             />
                         }
@@ -239,7 +239,7 @@ const TileDetail = ({item, layer1Data, handleRead, handleWatch, handleTakeTest, 
                             />
                         }
                         {item.file_type == '8' && 
-                            <Button1 value="Visit" 
+                            <Button1 value="Open" 
                                 handleClick={() => handleView(item, i)} 
                             />
                         }

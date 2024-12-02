@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, Suspense, lazy } from "react";
-import { getCourseDetail_Service } from "@/services";
+import { freeTransactionService, getCourseDetail_Service } from "@/services";
 import {
   comboDetail,
   decrypt,
@@ -262,6 +262,31 @@ const Details = ({ value }) => {
     }
   };
 
+  const handleAddToMyCourse = async () => {
+    try {
+      if (userLoggedIn()) {
+        const token = get_token()
+        const formData = {
+          course_id: id,
+          parent_id:0,
+          coupon_applied:0
+        };
+        const response = await freeTransactionService(encrypt(JSON.stringify(formData), token));
+        const data = decrypt(response.data, token);
+        if (data.status) {
+          toast.success("Added Successfully");
+          router.push("/private/myProfile/myCourse");
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        setModalShow(true);
+      }
+    } catch (error) {
+      console.error("Error adding course:", error);
+    }
+  };
+
   const handleBuyNow = () => {
     const isLoggedIn = userLoggedIn();
     if (isLoggedIn) {
@@ -427,6 +452,7 @@ const Details = ({ value }) => {
                           courseCombo={courseCombo}
                           handleDetail={() => console.log("detail")}
                           detail={true}
+                          handleAddToMyCourse = {handleAddToMyCourse}
                         />
                       </div>
                     </div>

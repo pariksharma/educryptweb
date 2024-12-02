@@ -219,6 +219,7 @@ const PlayId = () => {
                             video_type={router.query.video_type}
                             chat_node={router.query.chat_node}
                             course_id={router.query.course_id}
+                            setTogglePlayPause={setTogglePlayPause}
                           />
                           <p className="liveTitleHeading">
                             {router?.query?.title}

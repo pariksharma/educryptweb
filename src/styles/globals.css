@@ -1234,7 +1234,7 @@ h1 {
   z-index: 9999;
   position: absolute;
   margin-top: 3px !important;
-  width: 5.5% !important;
+  width: 6.5% !important;
   height: auto !important;
   /* aspect-ratio: 17 / 9 !important; */
 }
@@ -1272,6 +1272,7 @@ h1 {
   padding: 4px 12px !important;
   font-size: 10px !important;
   width: 100% !important;
+  white-space: nowrap !important;
 }
 
 .trendBtnCont .exploreBtn {
@@ -1287,12 +1288,13 @@ h1 {
 .trendBtnCont .buyBtn {
   background: var(--btnDeafult) !important;
   color: #fff !important;
-
+white-space: nowrap !important;
   font-weight: 600 !important;
 }
 
 .trendBtnCont .buyBtn:hover {
   background: #fff !important;
+  white-space: nowrap !important;
   color: var(--btnDeafult) !important;
 }
 
@@ -5352,18 +5354,27 @@ h4.userRateTitle {
 
 .simplebar-content-wrapper .simplebar-content {
   margin-top: auto !important;
-  overflow-y: scroll !important;
+  overflow-y: scroll !important; 
   height: 492px !important;
   border-bottom: 1px solid #efefef !important;
 }
 
-.simplebar-content {
-  padding: 5px 30px !important;
+.simplebar-content-wrapper .simplebar-content::-webkit-scrollbar {
+  width: 0; 
+  height: 0; 
 }
 
-/* #uncontrolled-tab-example-tabpane-Live #Poll{
-  height: 100vh !important;
-} */
+.simplebar-content-wrapper .simplebar-content {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;     
+}
+
+
+.simplebar-content {
+  padding: 5px 8px !important;
+}
+
+
 
 .simplebar-content:after,
 .simplebar-content:before {
@@ -5372,6 +5383,7 @@ h4.userRateTitle {
 }
 .chat-conversation{
   height: 100% !important;
+  padding-bottom: 42px !important;
 }
 .chat-conversation .chat-conversation-list {
   margin-bottom: 0 !important;
@@ -5391,7 +5403,7 @@ h4.userRateTitle {
   align-items: flex-start !important;
   display: inline-flex !important;
   margin-bottom: 24px !important;
-  max-width: 58% !important;
+  max-width: 180px !important;
   position: relative !important;
 }
 
@@ -5418,9 +5430,9 @@ hr.p_divider {
   display: flex !important;
   flex-wrap: wrap !important;
   font-size: var(--size-14) !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
   gap: 8px !important;
-  color: #4e4e4e !important;
+  color: black !important;
   font-family: "Inter", sans-serif !important;
 }
 
@@ -5450,6 +5462,7 @@ hr.p_divider {
 
 .profile_change_pass .modal-content{
   padding: 20px !important;
+  border-radius: 20px !important;
 }
 
 
@@ -5461,7 +5474,8 @@ hr.p_divider {
 }
 
 .chat-conversation .conversation-list .ctext-wrap-content {
-  padding: 12px 12px !important;
+  padding: 8px 12px !important;
+
   position: relative !important;
   border-radius: 10px !important;
   background: #FFF8F3 !important;
@@ -5535,11 +5549,11 @@ hr.divider {
 .chat-conversation .right {
   justify-content: flex-end !important;
   display: flex !important;
+  margin-top: -6% !important;
+  margin-bottom: -6% !important;
 }
 
-.chat-conversation .right .conversation-list {
-  text-align: right !important;
-}
+
 
 .chat-conversation .right .chat-avatar {
   margin-left: 8px !important;
@@ -5548,7 +5562,7 @@ hr.divider {
 }
 
 .chat-conversation .right .conversation-list .conversation-name {
-  justify-content: flex-end !important;
+  /* justify-content: flex-end !important; */
 }
 
 .chat-conversation .conversation-list h5.conversation-name {
@@ -5556,10 +5570,10 @@ hr.divider {
   display: flex !important;
   flex-wrap: wrap !important;
   font-size: var(--size-11) !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
   gap: 8px !important;
   font-family: "Inter", sans-serif !important;
-  color: #3f3f3f !important;
+  color: black !important;
 }
 
 .chat-conversation .right .conversation-list .ctext-wrap {
@@ -5571,7 +5585,7 @@ hr.divider {
   background: #F4F4F4 !important;
   box-shadow: none !important;
   order: 2 !important;
-  text-align: right !important;
+ 
   border-bottom-right-radius: 0px !important;
 }
 
@@ -5590,9 +5604,9 @@ hr.divider {
   color: #969696 !important;
 }
 .chat_input {
-  position: relative !important;
-  bottom: 0px !important;
-  width: 100% !important;
+  position: absolute !important;
+  bottom: 7px !important;
+  width: 94% !important;
   display: flex !important;
   align-items: center !important;
   gap: 8px !important;
@@ -5752,12 +5766,12 @@ hr.divider {
 }
 
 .liveChatTabs .tab-content > div:nth-child(1){
-  height: 54vh !important;
+  height: 100% !important;
   /* height: calc(100% - 344px) !important; */
 }
 
 .liveChatTabs .tab-content > div:nth-child(2) {
-  height: 61vh !important;
+  height: 100% !important;
   overflow-y: scroll !important;
   padding: 0px 5px !important;
 }
@@ -7063,6 +7077,7 @@ button.shaka-small-play-button.material-icons-round.shaka-tooltip {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
+  z-index: 999 !important;
 }
 
 .audio-player__top {
@@ -7676,8 +7691,13 @@ font-weight: 700;
   overflow-y: scroll !important;
   overflow-x: hidden !important;
   padding: 5px !important;
-  height: 61vh !important;
+  height: 100% !important;
 }
+.liveChatTabs .tab-content {
+  overflow: hidden !important;
+}
+
+
 .tab-content #Poll{
   overflow-y: scroll !important;
   overflow-x: hidden !important;
@@ -7728,11 +7748,14 @@ h4.pdf_title {
   }
   .l_timer {
     color: #E55B5B !important;
-    font-size: var(--size-12) !important;
+    font-size: var(--size-10) !important;
   }
   .radio-1 .progress-bar-1, 
   .radio-2 .progress-bar-1{
     background-color: #0CC292 !important;
+  }
+  .radio-1{
+    margin-bottom: 7% !important;
   }
   .leader-btn {
     border: 0px;
@@ -7768,7 +7791,7 @@ h4.pdf_title {
     display: -webkit-box !important;
     display: -ms-flexbox !important;
     display: flex !important;
-    height: 10px !important;
+    height: 4px !important;
     overflow: hidden !important;
     font-size: .75rem !important;
     background-color: #e9ecef !important;
@@ -7782,6 +7805,7 @@ h4.pdf_title {
     color: #7D7D7D !important;
     font-size: var(--size-11) !important;
     font-weight: 400 !important;
+    margin-bottom: 8px;
   }
   .checkbox-custom, .radio-custom {
     opacity: 0 !important;
@@ -8048,8 +8072,14 @@ h4.pdf_title {
   .youtubePlayer{
     height: 100% !important;
   }
-  .liveChatTabs .tab-content > div {
+  /* .liveChatTabs .tab-content > div {
     height: 50vh !important;
+  } */
+  .liveChatTabs ul.nav-tabs li button {
+    font-size: var(--size-10) !important;
+  }
+  .chat_input {
+    width: 80% !important;
   }
 }
 
@@ -8123,6 +8153,9 @@ h4.pdf_title {
 }
 
 @media (max-width: 768px) {
+  .chat_input {
+      width: 94% !important;
+    }
   .testimonial-slider .slick-prev,
   .testimonial-slider .slick-next {
     margin: 0px 5px !important;
@@ -8621,3 +8654,151 @@ h4.pdf_title {
 }
 
 /* ======================== Media Query Section Ends ===================== */
+
+
+
+/* ======================== BookMark Section ===================== */
+
+.bookmark-box{
+  background-color: #F8F8F8;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  
+}
+.org-text{
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  color: #FF7426;
+}
+.black-txt{
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  color: black;
+}
+
+.bookmark-container {
+  max-height: 100%; 
+  overflow-y: auto; 
+  padding-right: 10px; 
+}
+
+
+.bookmark-container::-webkit-scrollbar {
+  width: 0; 
+  height: 0; 
+}
+
+.bookmark-container {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;     
+}
+
+.cardx {
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+}
+
+.bookmark-container {
+  flex-grow: 1;
+  overflow-y: auto; 
+}
+
+.add-bookmark-btn {
+  border: 1px solid #FF7426;
+  outline: none;
+  width: 88% !important;
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Reddit Sans", sans-serif !important;
+  color: #FF7426;
+  margin-top: auto; 
+  position: absolute !important;
+  bottom: 10px !important;
+}
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; 
+}
+
+/* Modal Content */
+.BookmarkModal {
+  background-color: white !important;
+  border-radius: 8px !important;
+  padding: 20px !important;
+  max-width: 400px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px !important;
+}
+
+/* Modal Elements */
+.modal-time {
+  font-size: 16px !important;
+  margin-bottom: 10px !important;
+}
+
+.modal-input {
+  width: 100% !important;
+  padding: 8px 0 !important; 
+  border: none !important;
+  border-bottom: 2px solid #ccc !important; 
+  outline: none !important; 
+  font-size: 16px !important;
+  font-family: "Arial", sans-serif !important;
+}
+
+.modal-input:focus {
+  border-bottom: 2px solid #ff7426 !important;
+}
+.modal-actions {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+.cancelAddBookmark,
+.modal-submit {
+  flex: 1 !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+}
+
+.cancelAddBookmark {
+  background-color: #f5f5f5 !important;
+  color: #555 !important;
+  border: none !important;
+}
+
+.modal-submit {
+  background-color: #ff7426 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+/* chat UI image issue */
+.chat-image {
+  max-height: 200px; /* Set a max height to prevent very tall images */
+  max-width: 100%; /* Ensure the image doesn't exceed the width of the container */
+  object-fit: cover; /* Keeps the aspect ratio and crops the image if necessary */
+  border-radius: 8px; /* Optional: Add rounded corners for better aesthetics */
+}

@@ -245,6 +245,7 @@ const GetInTouch = forwardRef((props, ref) => {
                                 value={gitForm.message}
                                 onChange={handleInputData}
                                 autoComplete='off'
+                                style={{resize: 'none'}}
                             />
                             <div className="sendbtn">
                                 <Button1 value="Send" handleClick={handleSubmit} />

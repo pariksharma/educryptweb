@@ -220,7 +220,7 @@ const Header = ({ search,IsHome }) => {
         </div>
         {!router.pathname.startsWith("/private") && search !== "disable" && (
           <div
-            className="input-group ms-3 search"
+            className="input-group mx-2 search flex-nowrap"
             onClick={() => setIsVisible(true)}
           >
             <span

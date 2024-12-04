@@ -119,7 +119,9 @@ const Chat = ({chat_node, course_id, video_id}) => {
               onSelect={(k) => setKey(k)}
               id="uncontrolled-tab-example"
               className="mb-3"
+              
             >
+              
               <Tab className="liveChat" eventKey="Live Chat" title="Live Chat">
                 {
                   key == "Live Chat" && (
@@ -197,14 +199,15 @@ const Chat = ({chat_node, course_id, video_id}) => {
                       <div className="pdf_img_cont">
                         <img src={pdf?.pdf_thumbnail ? pdf?.pdf_thumbnail : "/assets/images/noImage.jfif"} alt="" />
                       </div>
-                      <h4 className="m-0 pdf_title flex-fill">{pdf?.pdf_title}</h4>
+                      <h4 className="m-0 pdf_title flex-fill"> <marquee className="mt-2" behavior="" direction=""  scrollamount="5">{pdf?.pdf_title}</marquee> </h4>
                       <svg
+                        style={{color: "#A3A3A3"}}
                         stroke="currentColor"
                         fill="currentColor"
                         strokeWidth="0"
                         viewBox="0 0 512 512"
-                        height="1em"
-                        width="1em"
+                        height="16"
+                        width="24"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path d="M294.1 256L167 129c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.3 34 0L345 239c9.1 9.1 9.3 23.7.7 33.1L201.1 417c-4.7 4.7-10.9 7-17 7s-12.3-2.3-17-7c-9.4-9.4-9.4-24.6 0-33.9l127-127.1z"></path>

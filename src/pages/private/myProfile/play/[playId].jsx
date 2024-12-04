@@ -5,11 +5,13 @@ import Head from 'next/head';
 import mqtt from 'mqtt';
 import Chat from '@/component/chat/chat';
 import { decrypt, encrypt, get_token } from '@/utils/helpers';
-import { getContentMeta } from '@/services';
+import { addBookmarkService, deleteBookmarkService, getContentMeta } from '@/services';
 import { getDatabase, ref, onValue, update, push } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import Header from '@/component/header/header';
 import Bookmark from '@/component/bookmark/bookmark';
+import BookmarkModal from '@/component/modal/bookmarkModal';
+import { toast } from 'react-toastify';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -35,6 +37,15 @@ const PlayId = () => {
     const router = useRouter();
     const [triggerChildFunction, setTriggerChildFunction] = useState(() => () => {});
     const [togglePlayPause, setTogglePlayPause] = useState({});
+    const [addBookmark, setAddBookmark] = useState(false)
+    const [bookMarkData, setBookMarkData] = useState([])
+    const [indexData, setIndexData] = useState([])
+    const [bookmarkTime, setBookmarkTime] = useState('')
+    const [getVideoTime, setGetVideoTime] = useState('')
+    const [trigger, setTrigger] = useState(0)
+    const [toastTrigger, setToastTrigger] = useState(0)
+    const [succesToastMsg, setSuccessToastMsg] = useState('')
+    const [errorToastMsg, setErrorToastMsg] = useState('')
     // const [getCurrTime, setGetCurrTime] = useState({ action: null, state: "0:00" })
 
     // console.log("router",router)
@@ -126,16 +137,148 @@ const PlayId = () => {
       };
 
       const handleBookMark = () => {
-        console.log('toggle')
-        if (togglePlayPause.action) {
-          togglePlayPause.action(); // Call the child's function
+        // console.log('getVideoTime', getVideoTime)
+        if(getVideoTime > 3){ 
+          console.log('toggle')
+          setAddBookmark(!addBookmark)
+          if (togglePlayPause.action) {
+            togglePlayPause.action(); // Call the child's function
+          }
+        } else {
+          setErrorToastMsg("Video is not started yet!")
+          setToastTrigger(() => toastTrigger + 1)
         }
       }
+
+      // console.log('addBookmark', addBookmark)
 
       useEffect(() => {
         // This will run whenever `togglePlayPause` changes
         console.log("Updated togglePlayPause:", togglePlayPause);
       }, [togglePlayPause]);
+
+      const fetchContentMeta = async () => {
+        try {
+          const userId = localStorage.getItem('user_id') 
+          const token = get_token();
+          const formData = {
+              token : router.query.video_id,
+              user_id: userId
+          }
+          const response_contentMeta_service = await getContentMeta(encrypt(JSON.stringify(formData), token));
+          const response_contentMeta_data = decrypt(response_contentMeta_service.data, token);
+          console.log('response_contentMeta_data', response_contentMeta_data)
+          if(response_contentMeta_data.status){
+            setBookMarkData(response_contentMeta_data?.data?.bookmark)
+            setIndexData(response_contentMeta_data?.data?.index)
+          }
+          else{
+            setPublicChat(0)
+            setErrorToastMsg(response_contentMeta_data.message)
+            setToastTrigger(() => toastTrigger + 1)
+            // toast.error(response_contentMeta_data.message);
+            if (
+              response_contentMeta_data.message ==
+              "You are already logged in with some other devices, So you are logged out from this device. 9"
+            ) {
+              localStorage.removeItem("jwt");
+              localStorage.removeItem("user_id");
+              localStorage.removeItem('userName')
+              router.pathname.startsWith("/private")
+                ? router.push("/")
+                : location.reload();
+            }
+          }
+        } catch (error) {
+          console.log('error found: ', error)
+        }
+      }
+
+
+      const submitBookmark = async (e, title) => {
+        e.preventDefault()
+        try {
+          const token = get_token()
+          const formData = {
+            user_id: localStorage.getItem('user_id'),
+            video_id : router.query.video_id,
+            time : togglePlayPause?.state,
+            info: title,
+          }
+          console.log('titleformData', formData)
+          const response_addBookmark_service = await addBookmarkService(encrypt(JSON.stringify(formData), token))
+          const response_addBookmark_data = decrypt(response_addBookmark_service.data, token);
+          console.log('response_addBookmark_data', response_addBookmark_service)
+          if(response_addBookmark_data.status) {
+            // toast.success("Added Successfully");
+            setSuccessToastMsg("Added Successfully");
+            setToastTrigger(() => toastTrigger + 1)
+            fetchContentMeta()
+            handleBookMark()
+          }
+          else {
+            // toast.error(response_addBookmark_data.message);
+            setErrorToastMsg(response_addBookmark_data.message)
+            setToastTrigger(() => toastTrigger + 1)
+            if (
+              response_addBookmark_data.message ==
+              "You are already logged in with some other devices, So you are logged out from this device. 9"
+            ) {
+              localStorage.removeItem("jwt");
+              localStorage.removeItem("user_id");
+              localStorage.removeItem('userName')
+              router.pathname.startsWith("/private")
+                ? router.push("/")
+                : location.reload();
+            }
+          }
+
+        } catch (error) {
+          console.log('error found: ', error)
+        }
+      }
+
+      const deleteBookMark = async (bookmark_id) => {
+        try {
+          const token = get_token()
+          const formData = {
+            index_id : bookmark_id
+          }
+          const response_deleteBookmark_service = await deleteBookmarkService(encrypt(JSON.stringify(formData), token))
+          const response_deleteBookmark_data = decrypt(response_deleteBookmark_service.data, token)
+          console.log('response_deleteBookmark_data', response_deleteBookmark_data)
+          if(response_deleteBookmark_data.status) {
+            setSuccessToastMsg(response_deleteBookmark_data.message)
+            setToastTrigger(() => toastTrigger + 1)
+            // toast.success(response_deleteBookmark_data.message)
+            fetchContentMeta()
+          }
+          else {
+            // toast.error(response_deleteBookmark_data.message);
+            setErrorToastMsg(response_deleteBookmark_data.message)
+            setToastTrigger(() => toastTrigger + 1)
+            if (
+              response_deleteBookmark_data.message ==
+              "You are already logged in with some other devices, So you are logged out from this device. 9"
+            ) {
+              localStorage.removeItem("jwt");
+              localStorage.removeItem("user_id");
+              localStorage.removeItem('userName')
+              router.pathname.startsWith("/private")
+                ? router.push("/")
+                : location.reload();
+            }
+          }
+        } catch (error) {
+          console.log('error found: ', error)
+        }
+      }
+
+      const handleCurrentTime = (bookmark) => {
+        console.log('bookmark', bookmark)
+        setBookmarkTime(bookmark?.time)
+        setTrigger(() => trigger + 1)
+      }
 
 
 
@@ -159,6 +302,13 @@ const PlayId = () => {
                 return (
                   <>
                   <Header />
+                    {addBookmark && 
+                      <BookmarkModal
+                        show={addBookmark}
+                        onHide={handleBookMark}
+                        time = {togglePlayPause.state}
+                        submitBookmark = {submitBookmark}
+                      />}
                     <div className="container-fluid live-main-container">
                       <div className="row" style={{ height: "100%" }}>
                         <div
@@ -177,7 +327,10 @@ const PlayId = () => {
                             chat_node = {router.query.chat_node}
                             course_id={router.query.course_id}
                             executeFunction={setTriggerChildFunction}
-                            setTogglePlayPause={setTogglePlayPause} 
+                            setTogglePlayPause={setTogglePlayPause}
+                            bookmarkTime = {bookmarkTime} 
+                            trigger = {trigger}
+                            getValue = {(value) => setGetVideoTime(value)}
                         />
                         <p className="liveTitleHeading">
                             {router?.query?.title}
@@ -192,6 +345,13 @@ const PlayId = () => {
                             course_id={router.query.course_id}
                             video_id={router.query.video_id}
                             handleBookMark = {handleBookMark}
+                            bookMarkData = {bookMarkData}
+                            indexData = {indexData}
+                            deleteBookMark = {deleteBookMark}
+                            handleCurrentTime = {handleCurrentTime}
+                            succesToastMsg = {succesToastMsg}
+                            errorToastMsg = {errorToastMsg}
+                            toastTrigger = {toastTrigger}
                           />
                         </div>
                     </div>
@@ -219,7 +379,10 @@ const PlayId = () => {
                             video_type={router.query.video_type}
                             chat_node={router.query.chat_node}
                             course_id={router.query.course_id}
-                            setTogglePlayPause={setTogglePlayPause}
+                            setTogglePlayPause={setTogglePlayPause} 
+                            bookmarkTime = {bookmarkTime}
+                            trigger = {trigger}
+                            getValue = {(value) => setGetVideoTime(value)}
                           />
                           <p className="liveTitleHeading">
                             {router?.query?.title}

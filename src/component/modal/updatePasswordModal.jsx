@@ -267,7 +267,7 @@ const UpdatePasswordModal = (props) => {
 
   return (
     <>
-       <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={1000}
         hideProgressBar={false}
@@ -338,7 +338,7 @@ const UpdatePasswordModal = (props) => {
                             src="/assets/images/india.png"
                             alt=""
                           />
-                          {"+81"}
+                          {countryCode}
                         </div>
                       </option>
                     )}

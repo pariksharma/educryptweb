@@ -101,3 +101,5 @@ export const feedCommentListService = async (params) => await axiosClient.post(P
 
 const PollUrl = 'poll/';
 export const getContentMeta = async (params) => await axiosClient.post(PollUrl + '/get_content_meta', params)
+export const addBookmarkService = async (params) => await axiosClient.post(PollUrl + '/add_video_index', params)
+export const deleteBookmarkService = async (params) => await axiosClient.post(PollUrl + '/delete_video_index', params)

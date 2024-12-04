@@ -43,7 +43,7 @@ const Banner = ({ IsMargin }) => {
         } else if (value.link_type == 3) {
         console.log('courseType', courseType)
         console.log('value', value)
-        const ary = courseType.filter((item) => item.id == value.master_cat)[0];
+        const ary = courseType.filter((item) => item.id == value.course_id)[0];
         router.push(`/view-courses/${ary.name + ":" + ary.id}`);
       }
     } catch (error) {

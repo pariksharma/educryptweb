@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import 'shaka-player/dist/controls.css';
 
 
-const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, videoMetaData, title, start_date, video_type, executeFunction, setTogglePlayPause }) => {
+const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, videoMetaData, title, start_date, video_type, setTogglePlayPause, bookmarkTime, getValue, trigger }) => {
 
   // console.log("NonDRMVideourl", NonDRMVideourl)
   // console.log("start_date", start_date)
@@ -51,7 +51,42 @@ const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, video
       return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     }
   };
+
+  const parseTime = (formattedTime) => {
+    if (!formattedTime) return 0; // Default to 0 for invalid input
   
+    const timeParts = formattedTime.split(':').map(Number); // Convert parts to numbers
+  
+    if (timeParts.length === 3) {
+      // Format: hh:mm:ss
+      const [hours, minutes, seconds] = timeParts;
+      return hours * 3600 + minutes * 60 + seconds;
+    } else if (timeParts.length === 2) {
+      // Format: mm:ss
+      const [minutes, seconds] = timeParts;
+      return minutes * 60 + seconds;
+    } else {
+      console.error('Invalid time format:', formattedTime);
+      return 0; // Default to 0 if format is incorrect
+    }
+  };
+
+
+  
+  useEffect(() => {
+    console.log('click')
+    if (bookmarkTime && videoRef.current) {
+      const timeInSeconds = parseTime(bookmarkTime);
+  
+      if (Number.isFinite(timeInSeconds)) { // Ensure valid time
+        console.log('Setting currentTime to:', timeInSeconds);
+        videoRef.current.currentTime = timeInSeconds; // Seek to bookmark time
+        videoRef.current.play(); // Start playing the video
+      } else {
+        console.error('Invalid bookmarkTime:', bookmarkTime);
+      }
+    }
+  }, [bookmarkTime, trigger]);
 
   useEffect(() => {
     currentTimeRef.current = currentTime; // Update the ref with the latest currentTime
@@ -306,6 +341,15 @@ const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, video
 
     initPlayer();
     const handleKeyPress = (event) => {
+      const activeElement = document.activeElement;
+      const isInputField = 
+        activeElement.tagName === 'INPUT' || 
+        activeElement.tagName === 'TEXTAREA' || 
+        activeElement.isContentEditable;
+
+      if (isInputField) {
+        return; // Allow normal typing behavior
+      }
       if (event.key === 'ArrowRight') {
         if (Live) {
           skipForward();
@@ -316,7 +360,8 @@ const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, video
         }
       } else if (event.key === ' ') { // Space key for play/pause
         event.preventDefault(); // Prevent scrolling the page
-        togglePlayPause();
+        event.stopPropagation(); 
+        // togglePlayPause();
       } else if (event.key === 'ArrowUp') { // Increase volume
         setVolume(prevVolume => {
           const newVolume = Math.min(prevVolume + 0.1, 1);
@@ -376,6 +421,11 @@ const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, video
     }));
   }, [setTogglePlayPause, videoState]);
 
+
+  useEffect(() => {
+    getValue(videoRef.current.currentTime)
+  }, [currentTime])
+
   // console.log('currentTime', formatTime(currentTime))
   
 
@@ -388,7 +438,7 @@ const VideoJsPlayer = ({ source, dType, poster, keySystem, NonDRMVideourl, video
               <div className="helpHead d-flex align-items-center audio-player__top" style={{ cursor: 'pointer', zIndex: "9999" }}>
                 {/* <MdOutlineChevronLeft onClick={() => router.back()} /> */}
                 <svg onClick={() => router.back()} width="13" height="20" viewBox="0 0 13 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_5517_7385)">
+                  <g clipPath="url(#clip0_5517_7385)">
                   <path d="M10.1323 -0.0117188C9.78246 0.122427 9.47213 0.337541 9.22872 0.614684C6.30441 3.44764 3.37133 6.27873 0.429475 9.10792C0.249499 9.25212 0.11846 9.44508 0.053298 9.66187C-0.0118628 9.87866 -0.00815201 10.1093 0.0639362 10.3241C0.133602 10.5063 0.243334 10.6719 0.385603 10.8094C3.42299 13.7533 6.46525 16.6935 9.51239 19.6299C9.61856 19.745 9.74875 19.837 9.8944 19.9C10.0401 19.9631 10.1979 19.9957 10.3575 19.9957C10.5172 19.9957 10.675 19.9631 10.8206 19.9C10.9663 19.837 11.0965 19.745 11.2026 19.6299C11.4453 19.4042 11.6881 19.1785 11.9074 18.9302C12.0828 18.7329 12.1773 18.4804 12.173 18.2205C12.1687 17.9605 12.0659 17.7111 11.884 17.5193C11.8284 17.4572 11.767 17.3952 11.7056 17.3359L4.28372 10.1802C4.19817 10.1084 4.11984 10.0291 4.04978 9.94314C4.12641 9.91486 4.19833 9.87587 4.26324 9.82745C6.76451 7.41774 9.26382 5.00709 11.7612 2.5955C12.2291 2.14403 12.3197 1.52327 11.9366 1.10284C11.5536 0.682416 11.1792 0.202722 10.5827 -0.000438266L10.1323 -0.0117188Z" fill="white"/>
                   </g>
                   <defs>

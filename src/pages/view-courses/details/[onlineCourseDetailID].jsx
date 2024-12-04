@@ -128,6 +128,37 @@ const ViewOnlineCourseDetail = ({ initialData, onlineCourseDetailID, IsTranding 
     }
   }, []);
 
+  useEffect(() => {
+    // Function to apply overflow style based on viewport size
+    const updateOverflowStyle = () => {
+      const currentPath = window.location.pathname; // Get only the pathname, no query strings
+      const viewportWidth = window.innerWidth;
+
+      // Check if the URL matches the desired page
+      if (currentPath.includes("/private/myProfile/play/")) {
+        // Apply overflow: hidden for smaller devices (<= 1024px)
+        if (viewportWidth >= 1024) {
+          document.documentElement.style.overflow = "hidden";
+        } else {
+          document.documentElement.style.overflow = "auto"; // Remove overflow: hidden for larger devices
+        }
+      } else {
+        document.documentElement.style.overflow = "auto"; // Reset for other pages
+      }
+    };
+
+    // Apply the overflow style on mount
+    updateOverflowStyle();
+
+    // Listen for window resize events to update the overflow style dynamically
+    window.addEventListener("resize", updateOverflowStyle);
+
+    // Cleanup: remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", updateOverflowStyle);
+    };
+  }, []);
+
   const fetchCourseDetail = useCallback(async (course_id) => {
     try {
       const formData = {

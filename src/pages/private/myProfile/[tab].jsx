@@ -70,9 +70,11 @@ const Index = ({ initialTab }) => {
     };
   }, []);
 
+  // console.log('statusTab', statusTab)
+
   const renderContent = () => {
     switch (statusTab) {
-      case "feeds":
+      case "10":
         return <Feeds />;
       case "ourCourse":
         return <OurCourses />;
@@ -99,7 +101,7 @@ const Index = ({ initialTab }) => {
         return <MyCourse />;
       case "purchase-history":
         return <PurchaseHistory />;
-      case "inquiry":
+      case "31":
       case "12":
         return <Inquiry title={title} />;
       case "profile":
@@ -126,7 +128,7 @@ const Index = ({ initialTab }) => {
 // Use `getStaticPaths` to define available dynamic routes
 export const getStaticPaths = async () => {
   const paths = [
-    { params: { tab: "feeds" } },
+    { params: { tab: "10" } },
     { params: { tab: "ourCourse" } },
     { params: { tab: "live_Test" } },
     { params: { tab: "live_Classes" } },
@@ -138,7 +140,7 @@ export const getStaticPaths = async () => {
     { params: { tab: "notification" } },
     { params: { tab: "myCourse" } },
     { params: { tab: "purchase-history" } },
-    { params: { tab: "inquiry" } },
+    { params: { tab: "31" } },
     { params: { tab: "8" } },
     { params: { tab: "9" } },
     { params: { tab: "Blog" } },

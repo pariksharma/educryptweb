@@ -108,7 +108,12 @@ const SideBar = () => {
                     <Nav.Item
                       key={index}
                       onClick={() => {
-                        router.push(`/private/myProfile/${value?.title?.split(" ").join("_")}`)
+                        router.push({
+                          pathname: `/private/myProfile/${value?.type}`,
+                          query: {
+                            title: value.title,
+                          }
+                        });
                         localStorage.removeItem('mainTab')
                       }
                       }
@@ -231,7 +236,7 @@ const SideBar = () => {
             </Nav.Item>
             {sideBarTabs &&
               sideBarTabs.map((value, index) => {
-                if (value?.type == "12") {
+                if (value?.type == "12" || value?.type == "31") {
                   return (
                     <Nav.Item
                       key={index}

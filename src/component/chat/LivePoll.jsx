@@ -87,7 +87,7 @@ const LivePoll = ({
           );
           const unsubscribePoll = onValue(pollRef, (snapshot) => {
             const Pollvalue = snapshot.val();
-            console.log('pollValue', Pollvalue)
+            // console.log('pollValue', Pollvalue)
             setPollFirebaseIds(Pollvalue)
             if (Pollvalue) {
               const seenObjects = new Map();
@@ -135,7 +135,7 @@ const LivePoll = ({
 
   const handleSubmitAnswer = (poll, myAnswer) => {
     try {
-      console.log('answer', myAnswer)
+      // console.log('answer', myAnswer)
       const appId = localStorage.getItem("appId"); 
       const userId = localStorage.getItem("user_id"); 
       const userName = localStorage.getItem("userName");
@@ -206,7 +206,7 @@ const LivePoll = ({
         // Update only the specified field
         await update(pollCountRef, { [updateField]: newValue });
   
-        console.log(`${updateField} updated successfully to ${newValue}`);
+        // console.log(`${updateField} updated successfully to ${newValue}`);
       }
     } catch (error) {
       console.log('error found', error)

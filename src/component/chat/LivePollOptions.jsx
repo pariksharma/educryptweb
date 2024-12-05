@@ -9,6 +9,7 @@ const LivePollOptions = ({poll, renderCountdown, index, handleSubmitAnswer, data
     const [alreadySubmitted, setAlreadySubmitted] = useState(false);
     const [selectAnswer, setSelectAnswer] = useState(false)
     const [myAnswer, setMyAnswer] = useState('')
+    const [answerSelect, setAnswerSelect] = useState(false)
 
     useEffect(() => {
       const fetchAlreadySubmit = async () => {
@@ -32,15 +33,19 @@ const LivePollOptions = ({poll, renderCountdown, index, handleSubmitAnswer, data
             let selectedAnswer = "";
             if(option == "option_1") {
                 selectedAnswer = '1'
+                setAnswerSelect(true)
             }
             else if(option == "option_2") {
                 selectedAnswer = '2'
+                setAnswerSelect(true)
             }
             else if(option == "option_3") {
                 selectedAnswer = '3'
+                setAnswerSelect(true)
             }
             else if(option == "option_4") {
                 selectedAnswer = '4'
+                setAnswerSelect(true)
             }
             setSelectAnswer(true)
             handleSubmitAnswer(poll, selectedAnswer)
@@ -114,6 +119,7 @@ const LivePollOptions = ({poll, renderCountdown, index, handleSubmitAnswer, data
                       className="radio-custom"
                       name={`radio-group-${poll?.id}`}
                       type="radio"
+                      disabled = {answerSelect}
                       value={optionKey}
                       checked={selectedOptions[poll?.id] === optionKey} // Mark as checked if selected
                       onChange={() =>

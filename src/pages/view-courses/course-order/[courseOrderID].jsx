@@ -395,15 +395,15 @@ const CourseOrderID = () => {
             response_getPayGateway_service.data,
             token
           );
-          console.log(
-            "response_getPayGateway_data",
-            response_getPayGateway_data
-          );
+          // console.log(
+          //   "response_getPayGateway_data",
+          //   response_getPayGateway_data
+          // );
           const payName =
             response_getPayGateway_data?.data?.rzp?.status == 1
               ? response_getPayGateway_data?.data?.rzp?.meta_name
               : response_getPayGateway_data?.data?.easebuzz?.meta_name;
-              console.log('couponData', couponData?.mrp)
+              // console.log('couponData', couponData?.mrp)
           if(couponData?.mrp == 0){
             handleAddToMyCourse()
           }
@@ -424,7 +424,7 @@ const CourseOrderID = () => {
               landmark: userData.landmark,
             };
 
-            console.log('couponData', couponData);
+            // console.log('couponData', couponData);
 
             const formDataPayment1 = {
               coupon_applied: couponData ? couponData?.coupon?.id : 0,
@@ -470,7 +470,7 @@ const CourseOrderID = () => {
                 ? formDataPayment2
                 : formDataPayment1;
 
-            console.log("formDataPayment", formDataPayment);
+            // console.log("formDataPayment", formDataPayment);
             const response_getFPayment_service = await getFPaymentService(
               encrypt(JSON.stringify(formDataPayment), token)
             );
@@ -480,7 +480,7 @@ const CourseOrderID = () => {
             );
             let key = response_getPayGateway_data?.data?.easebuzz?.mid;
             // console.log('formDataPayment', formDataPayment)
-            console.log("response_getFPayment_data", response_getFPayment_data);
+            // console.log("response_getFPayment_data", response_getFPayment_data);
             if (response_getFPayment_data.status) {
               if (response_getPayGateway_data?.data?.rzp?.status == 1) {
                 try {
@@ -1524,14 +1524,14 @@ const CourseOrderID = () => {
                           />
                         </div>
                         <div className="col-md-12 mb-4">
-                          <label class="container4 d-flex align-items-center">
+                          <label className="container4 d-flex align-items-center">
                             <input
                               type="checkbox"
                               onChange={() =>
                                 setDefaultAddress(!defaultAddress)
                               }
                             />
-                            <span class="checkmark"></span>
+                            <span className="checkmark"></span>
                             Make this my default address
                           </label>
                         </div>
@@ -1745,7 +1745,7 @@ const CourseOrderID = () => {
                           // console.log("item", item);
                           return (
                             <>
-                              <div className="w-100 d-flex justify-content-between align-items-center">
+                              <div className="w-100 d-flex justify-content-between align-items-center" key={index}>
                                 <div className="gap-2 d-flex align-items-center">
                                   <img
                                     className="discountIcon"
@@ -1827,7 +1827,7 @@ const CourseOrderID = () => {
                                     (value, ind) => {
                                       // console.log('tax', item)
                                       return (
-                                        <div className="mb-3 card acc_contentCard">
+                                        <div className="mb-3 card acc_contentCard" key={ind}>
                                           <p className="m-0 installmentStripe">
                                             {ind == 0
                                               ? "1st Installment"
@@ -1987,7 +1987,7 @@ const CourseOrderID = () => {
                           <td>
                             <p className="m-0 price_totalTitle">To Pay </p>
                           </td>
-                          {console.log('couponData', couponData)}
+                          {/* {console.log('couponData', couponData)} */}
                           {courseData?.cat_type == 1
                             ? courseData.course_sp && (
                               <td>
@@ -2067,7 +2067,7 @@ const CourseOrderID = () => {
                         </Link>
                       </span>
                     </label> */}
-                    <label class="container3 d-flex align-items-center">
+                    <label className="container3 d-flex align-items-center">
                       <span className="ms-2">
                         Before making payment you agree to our <br />
                         <Link
@@ -2082,7 +2082,7 @@ const CourseOrderID = () => {
                         value={toggleTerms}
                         onChange={(e) => setToggleTerms(!toggleTerms)}
                       />
-                      <span class="checkmark"></span>
+                      <span className="checkmark"></span>
                     </label>
                   </div>
                   <div className="w-100 checkOutBtn mt-3">
@@ -2111,15 +2111,15 @@ const CourseOrderID = () => {
                   style={{ whiteSpace: "nowrap" }}
                 >
                   <span className="col-md-5">
-                    <i class="bi bi-check-circle-fill" />
+                    <i className="bi bi-check-circle-fill" />
                     Certified product
                   </span>
                   <span className="col-md-5">
-                    <i class="bi bi-check-circle-fill" />
+                    <i className="bi bi-check-circle-fill" />
                     Premium quality
                   </span>
                   <span className="col-md-5">
-                    <i class="bi bi-check-circle-fill" />
+                    <i className="bi bi-check-circle-fill" />
                     Secure Checkout
                   </span>
                 </div>

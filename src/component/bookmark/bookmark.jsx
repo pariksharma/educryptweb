@@ -83,7 +83,7 @@ const Bookmark = ({video_id, handleBookMark, bookMarkData, indexData, handleCurr
         }
         const response_contentMeta_service = await getContentMeta(encrypt(JSON.stringify(formData), token));
         const response_contentMeta_data = decrypt(response_contentMeta_service.data, token);
-        console.log('response_contentMeta_data', response_contentMeta_data)
+        // console.log('response_contentMeta_data', response_contentMeta_data)
         if(response_contentMeta_data.status){
             const data = response_contentMeta_data?.data?.video;
             setShowChat(true)
@@ -140,7 +140,7 @@ const Bookmark = ({video_id, handleBookMark, bookMarkData, indexData, handleCurr
         theme="light"
       />
       <div className="container-fluid">
-        <div className="row liveChatTabs">
+        <div className="row liveChatTabs2">
           <div className="card p-2 col-md-12">
             <Tabs
               activeKey={key}

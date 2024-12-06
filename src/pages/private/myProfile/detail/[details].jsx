@@ -112,7 +112,7 @@ const Details = ({ value }) => {
 
   useEffect(() => {
     if (details) {
-      console.log("details",details)
+      // console.log("details",details)
       // window.scrollTo(0, 0);
       setId(details?.slice(details.indexOf(":") + 1, details.indexOf("&")));
       setTitleName(details?.slice(0, details.indexOf(":")));
@@ -205,7 +205,7 @@ const Details = ({ value }) => {
   // console.log('courseCombo', courseCombo)
 
   const fetchCourseDetail = async (id) => {
-    console.log("id",id)
+    // console.log("id ",id)
     try {
       const token = get_token();
       const formData = {

@@ -63,7 +63,7 @@ const Chat = ({chat_node, course_id, video_id}) => {
         }
         const response_contentMeta_service = await getContentMeta(encrypt(JSON.stringify(formData), token));
         const response_contentMeta_data = decrypt(response_contentMeta_service.data, token);
-        console.log('response_contentMeta_data', response_contentMeta_data)
+        // console.log('response_contentMeta_data', response_contentMeta_data)
         if(response_contentMeta_data.status){
             const data = response_contentMeta_data?.data?.video
             setPublicChat(data?.extra_params?.public_chat)
@@ -106,7 +106,7 @@ const Chat = ({chat_node, course_id, video_id}) => {
     }
   };
 
-  console.log('key222', key)
+  // console.log('key222', key)
 
   return (
     <>

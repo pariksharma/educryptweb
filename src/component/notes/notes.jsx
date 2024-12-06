@@ -275,7 +275,7 @@ const Notes = ({
         response_getMasterData_service.data,
         token
       );
-      console.log('response_getMasterData_Data', response_getMasterData_Data)
+      // console.log('response_getMasterData_Data', response_getMasterData_Data)
       if (response_getMasterData_Data.status) {
         return response_getMasterData_Data.data;
       }
@@ -593,7 +593,7 @@ const Notes = ({
 
   const handleConcept = async (value, index) => {
     try {
-      console.log('value', value)
+      // console.log('value', value)
       setConceptTitle(value.title)
       const response = await fetch(value?.file_url);
       if (!response.ok) {
@@ -685,7 +685,7 @@ const Notes = ({
                   )}
                 </span>
               </div>
-              <div className="py-2 contentHeight">
+              <div className="py-2 contentHeight ps-2">
                 {showLayer == "layer3" ? (
                   layer3Data?.list?.length > 0 &&
                     layer3updateData?.length > 0 ? (

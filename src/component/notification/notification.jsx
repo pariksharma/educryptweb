@@ -136,7 +136,7 @@ const Notification = () => {
         response_getNotification_service.data,
         token
       );
-      console.log("response_getNotification_data", response_getNotification_data);
+      // console.log("response_getNotification_data", response_getNotification_data);
       if (response_getNotification_data?.status) {
         if (response_getNotification_data?.data?.length < 0) {
           setShowError(true)

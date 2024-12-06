@@ -87,7 +87,7 @@ const SliderContent = ({ freeCourse, titleName }) => {
           </div>
           {freeCourse.mrp == 0 && <p className="m-0 freeStripe">Free</p>}
         </div>
-        {freeCourse.mrp != 0 && (
+        {freeCourse.mrp != 0 ? (
           <p className="my-2 d-flex align-items-center validity">
             <img
               className="calendarDate2 me-1"
@@ -97,9 +97,21 @@ const SliderContent = ({ freeCourse, titleName }) => {
             Validity:
             <span className="ms-2 valid_date">{`${freeCourse.validity}`}</span>
           </p>
-        )}
+        )
+        :
+        (router.pathname.startsWith('/private/myProfile') || router.pathname.startsWith('/view-courses/details')) ?
+          <p className="my-2 d-flex align-items-center validity">
+            <img
+              className="calendarDate2 me-1"
+              src=""
+              alt=""
+            />
+          </p>
+          :
+          null
+        }
         <hr className="dotted-divider" />
-        {freeCourse.mrp != 0 && (
+        {freeCourse.mrp != 0 ? (
           <div className="coursePrice gap-1 d-flex flex-wrap align-items-center pb-1 m-0">
             {/* <div className="coursePrice d-flex align-items-center pb-2 m-0"> */}
             <p className="m-0 d-flex align-items-center Cost_Price">
@@ -124,7 +136,19 @@ const SliderContent = ({ freeCourse, titleName }) => {
               </>
             )}
           </div>
-        )}
+        )
+        :
+        (router.pathname.startsWith('/private/myProfile') || router.pathname.startsWith('/view-courses/details')) ?
+          <div className="coursePrice gap-1 d-flex flex-wrap align-items-center pb-1 m-0">
+            {/* <div className="coursePrice d-flex align-items-center pb-2 m-0"> */}
+            <p className="m-0 d-flex align-items-center Cost_Price">
+              {/* <FaRupeeSign className="rupeeSign" /> */}
+              Free
+            </p>
+          </div>
+        :
+        null
+        }
         {/* <button className="btn exploreBtn">Explore now</button> */}
         {freeCourse.mrp != 0 ?
             <div className="gap-2 d-flex flex-wrap flex-md-wrap flex-lg-nowrap justify-content-between onlineCourseButtons">

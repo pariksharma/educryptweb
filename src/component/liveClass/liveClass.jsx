@@ -116,11 +116,11 @@ const LiveClass = ({title}) => {
             >
               <Tab eventKey="LIVE" title="LIVE">
                 <div className="row">
-                  {console.log(liveCourses)}
+                  {/* {console.log(liveCourses)} */}
                   {liveCourses?.length > 0 ?
                     <Suspense fallback={<LoaderAfterLogin />}>
                       {liveCourses.map((item, index) => {
-                        console.log('item', item)
+                        // console.log('item', item)
                         if(item?.live_status == '1') {
                           return <LiveClassCard courseData={item} value={key} key={index} />
                         }

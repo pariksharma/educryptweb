@@ -49,7 +49,7 @@ const Card3 = ({ value, titleName, courseCombo, handleAddToMyCourse }) => {
           setModalShow(false);
         }}
       />
-      <div className={`card border-0 shadow-lg mb-3 p-3 ${value?.cat_type == 0 && 'detail-rightCard'} m-3`}>
+      <div className={`card border-0 shadow-lg mb-3 p-3 ${value?.cat_type == 0 ? 'detail-rightCard': 'freeCard'} m-3`}>
         {value && <p className="detailStripe">New</p>}
         <div className="d-flex justify-content-center">
           <img
@@ -128,7 +128,7 @@ const Card3 = ({ value, titleName, courseCombo, handleAddToMyCourse }) => {
             </div>
           </>
         )}
-          {console.log('value', value)}
+          {/* {console.log('value', value)} */}
           {(value.is_purchased != 0 ? (
             <>
               {!router.pathname.startsWith("/private/myProfile/detail") &&

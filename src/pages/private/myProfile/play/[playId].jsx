@@ -68,7 +68,7 @@ const PlayId = () => {
 
             // Clean up the event listener on component unmount
             return () => {
-                console.log("hello")
+                // console.log("hello")
                 handleUserOffline()
                 handleUserOfflineMQTT()
                 window.removeEventListener('resize', handleResize);
@@ -82,9 +82,9 @@ const PlayId = () => {
         try {
           const app_id = localStorage.getItem("appId");
           const user_id = localStorage.getItem("user_id");
-            const chatNode = localStorage.getItem("chat_node");
-            const curr_date = new Date();
-            console.log('chatNode', chatNode)
+          const chatNode = localStorage.getItem("chat_node");
+          const curr_date = new Date();
+          // console.log('chatNode', chatNode)
           const userStatusRef = ref(
             database,
             `${app_id}/chat_master/${chatNode}/User/${user_id}`
@@ -138,8 +138,8 @@ const PlayId = () => {
 
       const handleBookMark = () => {
         // console.log('getVideoTime', getVideoTime)
-        if(getVideoTime > 3){ 
-          console.log('toggle')
+        if(getVideoTime > 1){ 
+          // console.log('toggle')
           setAddBookmark(!addBookmark)
           if (togglePlayPause.action) {
             togglePlayPause.action(); // Call the child's function
@@ -167,7 +167,7 @@ const PlayId = () => {
           }
           const response_contentMeta_service = await getContentMeta(encrypt(JSON.stringify(formData), token));
           const response_contentMeta_data = decrypt(response_contentMeta_service.data, token);
-          console.log('response_contentMeta_data', response_contentMeta_data)
+          // console.log('response_contentMeta_data', response_contentMeta_data)
           if(response_contentMeta_data.status){
             setBookMarkData(response_contentMeta_data?.data?.bookmark)
             setIndexData(response_contentMeta_data?.data?.index)
@@ -205,10 +205,10 @@ const PlayId = () => {
             time : togglePlayPause?.state,
             info: title,
           }
-          console.log('titleformData', formData)
+          // console.log('titleformData', formData)
           const response_addBookmark_service = await addBookmarkService(encrypt(JSON.stringify(formData), token))
           const response_addBookmark_data = decrypt(response_addBookmark_service.data, token);
-          console.log('response_addBookmark_data', response_addBookmark_service)
+          // console.log('response_addBookmark_data', response_addBookmark_service)
           if(response_addBookmark_data.status) {
             // toast.success("Added Successfully");
             setSuccessToastMsg("Added Successfully");
@@ -246,7 +246,7 @@ const PlayId = () => {
           }
           const response_deleteBookmark_service = await deleteBookmarkService(encrypt(JSON.stringify(formData), token))
           const response_deleteBookmark_data = decrypt(response_deleteBookmark_service.data, token)
-          console.log('response_deleteBookmark_data', response_deleteBookmark_data)
+          // console.log('response_deleteBookmark_data', response_deleteBookmark_data)
           if(response_deleteBookmark_data.status) {
             setSuccessToastMsg(response_deleteBookmark_data.message)
             setToastTrigger(() => toastTrigger + 1)
@@ -275,7 +275,7 @@ const PlayId = () => {
       }
 
       const handleCurrentTime = (bookmark) => {
-        console.log('bookmark', bookmark)
+        // console.log('bookmark', bookmark)
         setBookmarkTime(bookmark?.time)
         setTrigger(() => trigger + 1)
       }

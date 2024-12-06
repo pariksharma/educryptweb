@@ -590,8 +590,8 @@ const PurchaseHistory = () => {
                 myOrder.map((item, index) => {
                   return (
                     <div className="card historyCard px-2 py-2 mb-2" key={index}>
-                      <div class="row align-items-center">
-                        <div class="mx-3 col-12 col-md-2 mb-2 mb-md-0 purchaseThumbnail">
+                      <div className="row align-items-center">
+                        <div className="mx-3 col-12 col-md-2 mb-2 mb-md-0 purchaseThumbnail">
                           <div className="d-flex align-items-center">
                             <img
                               loading="lazy"
@@ -602,21 +602,21 @@ const PurchaseHistory = () => {
                         </div>
 
                         {/* <!-- Course Details Section --> */}
-                        <div class="col-12 col-md-3 mb-2 mb-md-0">
-                          <h6 class="mb-1 H_title">{item.title}</h6>
-                          <p class="m-0 text-muted historyDate"><span>Added:</span> {formatDate(JSON.parse(item.purchase_date))}</p>
+                        <div className="col-12 col-md-3 mb-2 mb-md-0">
+                          <h6 className="mb-1 H_title">{item.title}</h6>
+                          <p className="m-0 text-muted historyDate"><span>Added:</span> {formatDate(JSON.parse(item.purchase_date))}</p>
                         </div>
 
-                        <div class="col-6 col-md-2 mb-2 mb-md-0">
-                          <p class="m-0 text-muted historyDate"><span>Expired On:</span> {formatDate(JSON.parse(item.expiry_date))}</p>
+                        <div className="col-6 col-md-2 mb-2 mb-md-0">
+                          <p className="m-0 text-muted historyDate"><span>Expired On:</span> {formatDate(JSON.parse(item.expiry_date))}</p>
                         </div>
 
-                        <div class="col-6 col-md-2 mb-2 mb-md-0">
-                          <p class="m-0 text-muted historyDate"><span>Order ID: </span>{item.txn_id}</p>
+                        <div className="col-6 col-md-2 mb-2 mb-md-0">
+                          <p className="m-0 text-muted historyDate"><span>Order ID: </span>{item.txn_id}</p>
                         </div>
 
-                        <div class="col-6 col-md-2 mb-2 mb-md-0">
-                          <p class="m-0 historyDate">
+                        <div className="col-6 col-md-2 mb-2 mb-md-0">
+                          <p className="m-0 historyDate">
                             <span>Amount: </span>
                             <FaRupeeSign className="rupeeSign" />{item.payment_mode == 1
                               ? item.emi_payment
@@ -625,12 +625,12 @@ const PurchaseHistory = () => {
                           {item.payment_mode && item.payment_mode == 0 && (
                             <>
                               {item.mrp != 0 &&
-                                <p class="m-0 text-success historyDate">Paid</p>
+                                <p className="m-0 text-success historyDate">Paid</p>
 
                               }
                               <>
                                 {item.invoice_url && (
-                                  <div class="col-6 col-md-1 text-end d-flex">
+                                  <div className="col-6 col-md-1 text-end d-flex">
 
                                     {item?.prices?.length > 0 &&
                                       <Button2 value="Extend Validity" handleClick={() => handleExtendValidity(item)} />

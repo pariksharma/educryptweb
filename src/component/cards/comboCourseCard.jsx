@@ -57,6 +57,7 @@ const ComboCourseCard = ({
           checkLogin ? "" : "freeCard"
         } card border-0  b-radius p-2 h-100 `}
         onClick={handleDetail}
+        style={{cursor: 'pointer'}}
       >
         {
           <img

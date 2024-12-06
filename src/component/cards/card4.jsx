@@ -483,81 +483,81 @@ const Card4 = ({ value, titleName, handleDetail, titleId, setGetCourse, handleAd
               <hr className="dotted-divider" />
             </>
           )}
-        {!comboDetail(router.asPath) && <>
-        {value.is_purchased == 0 && value?.mrp != 0 && (
-          <>
-            {/* <div className="coursePriceContainer"> */}
-            <div className="coursePrice gap-2 d-flex align-items-center pb-1 m-0">
-              <div className="m-0 d-flex align-items-center detail_C_Price">
-                {/* <FaRupeeSign className="rupeeSign" /> */}₹
-                {/* <span className='costPrice'> */}
-                {value.is_gst == 0
-                  ? Number(value.mrp) + Number(value.tax)
-                  : value.mrp}
-                {/* </span> */}
-              </div>
-              {Number(value.mrp) + Number(value.tax) != value.course_sp && (
-                <>
-                  <p className="m-0 Card-OffPrice">
-                    <del>
-                      {/* <FaRupeeSign className="rupeeSign2" /> */}₹
-                      {value?.course_sp}
-                    </del>
-                  </p>
-                  <p className="m-0 offPricePercentage">
-                    {value?.discount && `(${value?.discount}% Off)`}
-                  </p>
-                </>
-              )}
-            </div>
-          </>
-        )}
-          {/* {console.log(value)} */}
-          {(value.is_purchased != 0 ? (
+          {!comboDetail(router.asPath) && 
             <>
-              {!router.pathname.startsWith("/private/myProfile/detail") &&
-              ((!router.pathname.startsWith("/private/myProfile/detail") &&
-                value.mrp != 0) ||
-                titleName != "detail") ? (
-                  <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
-                    <Button1
-                      value={
-                        value?.is_purchased == 1
-                          ? "View Content"
-                          : value?.purchase_date != ""
-                          ? "View Content"
-                          : "View Detail"
-                      }
-                      data={true}
-                      handleClick={() => handleDetail(value)}
-                    />
-                    {value?.prices?.length > 0 && (
-                      <Button2
-                        value="Extend Validity"
-                        data={true}
-                        handleClick={() => handleExtendValidity(value)}
-                      />
+              {value.is_purchased == 0 && value?.mrp != 0 && (
+                <>
+                  {/* <div className="coursePriceContainer"> */}
+                  <div className="coursePrice gap-2 d-flex align-items-center pb-1 m-0">
+                    <div className="m-0 d-flex align-items-center detail_C_Price">
+                      {/* <FaRupeeSign className="rupeeSign" /> */}₹
+                      {/* <span className='costPrice'> */}
+                      {value.is_gst == 0
+                        ? Number(value.mrp) + Number(value.tax)
+                        : value.mrp}
+                      {/* </span> */}
+                    </div>
+                    {Number(value.mrp) + Number(value.tax) != value.course_sp && (
+                      <>
+                        <p className="m-0 Card-OffPrice">
+                          <del>
+                            {/* <FaRupeeSign className="rupeeSign2" /> */}₹
+                            {value?.course_sp}
+                          </del>
+                        </p>
+                        <p className="m-0 offPricePercentage">
+                          {value?.discount && `(${value?.discount}% Off)`}
+                        </p>
+                      </>
                     )}
                   </div>
-                ) : (
-                <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
-                  <Button1 widthFull={true} value="Purchased" />
-                </div>
+                </>
               )}
+              {/* {console.log('value', value)} */}
+              {(value.is_purchased != 0 ? (
+                <>
+                  {!router.pathname.startsWith("/private/myProfile/detail") &&
+                  ((!router.pathname.startsWith("/private/myProfile/detail") &&
+                    value.mrp != 0) ||
+                    titleName != "detail") ? (
+                      <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
+                        <Button1
+                          value={
+                            value?.is_purchased == 1
+                              ? "View Content"
+                              : value?.purchase_date != ""
+                                ? "View Content"
+                                : "View Detail"
+                          }
+                          data={true}
+                          handleClick={() => handleDetail(value)}
+                        />
+                        {value?.prices?.length > 0 && (
+                          <Button2
+                            value="Extend Validity"
+                            data={true}
+                            handleClick={() => handleExtendValidity(value)}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                    <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
+                      <Button1 widthFull={true} value="Purchased" />
+                    </div>
+                  )}
+                </>
+              ) : (
+                value.mrp != '0' ? 
+                  <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
+                    <Button1 widthFull={true} value={"Buy Now"} handleClick={handleBuy} />
+                  </div>
+                  :
+                  <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
+                    <Button1 widthFull={true} value={"Add to My Course"} handleClick={handleAddToMyCourse} />
+                  </div>
+              ))}
             </>
-          ) : (
-            value.mrp != '0' ? 
-            <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
-              <Button1 widthFull={true} value={"Buy Now"} handleClick={handleBuy} />
-            </div>
-            :
-            <div className="myCourseBtn d-flex flex-wrap flex-lg-nowrap gap-2">
-            <Button1 widthFull={true} value={"Add to My Course"} handleClick={handleAddToMyCourse} />
-          </div>
-          ))          
-        }
-        </>
-        }
+          }
         </div>
       </div>
     </>

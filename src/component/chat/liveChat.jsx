@@ -170,7 +170,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
 
 
   const getChatData = () => {
-    console.log("isPublic",isPublic)
+    // console.log("isPublic",isPublic)
     const app_id = localStorage.getItem("appId");
     const user_id = localStorage.getItem("user_id")
     setUserId(localStorage.getItem("user_id"));
@@ -183,7 +183,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
     // console.log(chatRef)
     const unsubscribe = onValue(chatRef, (snapshot) => {
       const value = snapshot.val();
-      console.log('value', value)
+      // console.log('value', value)
       if (value) {
         const messagesArray = value ? Object.values(value) : [];
         setInput("")
@@ -577,7 +577,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
                                       <img
                                         src="/assets/images/Pdf_imgChat.svg"
                                         alt=""
-                                        srcset=""
+                                        srcSet=""
                                       />
                                       
                                       <span className="pdf_title">
@@ -707,7 +707,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
             </div>
 
             {/* <div style={{ position: "relative", display: "inline-block" }}> */}
-            {console.log("imagePreviews", imagePreviews)}
+            {/* {console.log("imagePreviews", imagePreviews)} */}
             <input
               className="border-0 input_field form-control"
               type="text"

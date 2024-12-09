@@ -119,7 +119,7 @@ const LivePollOptions = ({poll, renderCountdown, index, handleSubmitAnswer, data
                       className="radio-custom"
                       name={`radio-group-${poll?.id}`}
                       type="radio"
-                      disabled = {answerSelect}
+                      disabled = {!!selectedOptions[poll?.id]}
                       value={optionKey}
                       checked={selectedOptions[poll?.id] === optionKey} // Mark as checked if selected
                       onChange={() =>

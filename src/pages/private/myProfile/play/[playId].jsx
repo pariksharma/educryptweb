@@ -12,6 +12,7 @@ import Header from '@/component/header/header';
 import Bookmark from '@/component/bookmark/bookmark';
 import BookmarkModal from '@/component/modal/bookmarkModal';
 import { toast } from 'react-toastify';
+import DeleteBookmarkModal from '@/component/modal/deleteBookmarkModal';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -38,6 +39,7 @@ const PlayId = () => {
     const [triggerChildFunction, setTriggerChildFunction] = useState(() => () => {});
     const [togglePlayPause, setTogglePlayPause] = useState({});
     const [addBookmark, setAddBookmark] = useState(false)
+    const [bookmarkDelete, setbookmarkDelete] = useState(false)
     const [bookMarkData, setBookMarkData] = useState([])
     const [indexData, setIndexData] = useState([])
     const [bookmarkTime, setBookmarkTime] = useState('')
@@ -46,6 +48,7 @@ const PlayId = () => {
     const [toastTrigger, setToastTrigger] = useState(0)
     const [succesToastMsg, setSuccessToastMsg] = useState('')
     const [errorToastMsg, setErrorToastMsg] = useState('')
+    const [bookmarkId, setBookmarkId] = useState('')
     // const [getCurrTime, setGetCurrTime] = useState({ action: null, state: "0:00" })
 
     // console.log("router",router)
@@ -238,7 +241,12 @@ const PlayId = () => {
         }
       }
 
-      const deleteBookMark = async (bookmark_id) => {
+      const deleteBookMark = (bookmark_id) => {
+        setbookmarkDelete(true)
+        setBookmarkId(bookmark_id)
+      }
+
+      const ConfirmDelete = async (bookmark_id) => {
         try {
           const token = get_token()
           const formData = {
@@ -252,11 +260,15 @@ const PlayId = () => {
             setToastTrigger(() => toastTrigger + 1)
             // toast.success(response_deleteBookmark_data.message)
             fetchContentMeta()
+            setbookmarkDelete(false)
+            setBookmarkId('')
           }
           else {
             // toast.error(response_deleteBookmark_data.message);
             setErrorToastMsg(response_deleteBookmark_data.message)
             setToastTrigger(() => toastTrigger + 1)
+            setbookmarkDelete(false)
+            setBookmarkId('')
             if (
               response_deleteBookmark_data.message ==
               "You are already logged in with some other devices, So you are logged out from this device. 9"
@@ -273,6 +285,8 @@ const PlayId = () => {
           console.log('error found: ', error)
         }
       }
+
+      
 
       const handleCurrentTime = (bookmark) => {
         // console.log('bookmark', bookmark)
@@ -308,6 +322,13 @@ const PlayId = () => {
                         onHide={handleBookMark}
                         time = {togglePlayPause.state}
                         submitBookmark = {submitBookmark}
+                      />}
+                    {bookmarkDelete && 
+                      <DeleteBookmarkModal
+                        show={bookmarkDelete}
+                        onHide={() => setbookmarkDelete(false)}
+                        bookmarkId = {bookmarkId}
+                        ConfirmDelete = {ConfirmDelete}
                       />}
                     <div className="container-fluid live-main-container">
                       <div className="row" style={{ height: "100%" }}>

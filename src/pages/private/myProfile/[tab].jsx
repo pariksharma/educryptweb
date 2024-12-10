@@ -17,16 +17,20 @@ import Testimonial from "@/component/testimonial/testimonial";
 import { useRouter } from "next/router";
 import { decrypt, get_token, userLoggedIn } from "@/utils/helpers";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { reset_tab } from "@/store/sliceContainer/masterContentSlice";
 
 const Index = ({ initialTab }) => {
   const router = useRouter();
   const [statusTab, setStatusTab] = useState(initialTab);
   const [title, settitle] = useState('');
+  const dispatch = useDispatch()
   useEffect(() => {
     // Update statusTab whenever the router.query.tab changes
     const { tab,title } = router.query;
     if (tab) {
       setStatusTab(tab);
+      dispatch(reset_tab())
     }
     settitle(title)
   }, [router.query]); // Dependency array with router.query.tab

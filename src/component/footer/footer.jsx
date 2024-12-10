@@ -18,17 +18,16 @@ const Footer = forwardRef((props, ref) => {
   const [isLoading, setIsLoading] = useState(false)
   const [modalShow, setModalShow] = useState(false)
   const [footerLinks, setFooterLinks] = useState('')
-  const [appLogo, setAppLogo] = useState('');
-  const [appName, setAppName] = useState('')
   const router = useRouter();
   const footerData = useSelector((state) => state.allCategory?.allCategory?.course_type_master)
+  const appDetail = useSelector((state) => state?.appDetail?.app_detail);
 
   useEffect(() => {
     setIsLoading(true);
     fetchFooterService();
-    setAppLogo(localStorage.getItem('logo'))
-    setAppName(localStorage.getItem('title'))
   }, [])
+
+  // console.log('appDetail', appDetail)
 
   const handleBlog = () => {
     const isLoggedIn = userLoggedIn();
@@ -68,23 +67,29 @@ const Footer = forwardRef((props, ref) => {
           <div className="row gap-3 gap-md-0 gap-lg-5 px-5 mx-auto justify-content-start">
             <div className="col-12 col-sm-6 col-md-4 col-lg-2">
               <div className="footerLogo">
-                {eduLogo1 && <img src={appLogo ? appLogo : eduLogo1} alt="" className="" />}
+                {eduLogo1 && <img src={appDetail?.web_logo ? appDetail?.web_logo : eduLogo1} alt="" className="" />}
               </div>
               <div className="m-0 mb-2 orgName">
-                {appName ? appName : 'Educrypt Edu Solutions Pvt. Ltd.'}
+                {appDetail?.title ? appDetail?.title : 'Educrypt Edu Solutions Pvt. Ltd.'}
               </div>
-              <div className="m-0 mb-2 orgAddress">
-                <span className="text-white fw-semibold">Address:</span> <br />
-                38 opebi Road, Ikeja, Lagos State, Nigeia.
-              </div>
-              <div className="m-0 mb-2 mobNumber">
-                <span className="text-white fw-semibold">Phone:</span> <br />
-                {footerLinks?.support_number ? footerLinks?.support_number : '+2349022396389'}
-              </div>
-              <div className="m-0 mb-2 emailAddress">
-                <span className="text-white fw-semibold">Email:</span> <br />
-                {footerLinks?.support_email ? footerLinks?.support_email : 'contact@contentionary.com'}
-              </div>
+              {appDetail?.address &&
+                <div className="m-0 mb-2 orgAddress">
+                  <span className="text-white fw-semibold">Address:</span> <br />
+                  {appDetail?.address}
+                </div>
+              }
+              {appDetail?.owner_mobile &&
+                <div className="m-0 mb-2 mobNumber">
+                  <span className="text-white fw-semibold">Phone:</span> <br />
+                  {appDetail?.owner_mobile}
+                </div>
+              }
+              {appDetail?.owner_email &&
+                <div className="m-0 mb-2 emailAddress">
+                  <span className="text-white fw-semibold">Email:</span> <br />
+                  {appDetail?.owner_email}
+                </div>
+              }
             </div>
             <div className="col-12 col-sm-6 col-md-4 col-lg-2">
               <h4 className="m-0 my-3 footTitle">Comapany</h4>
@@ -188,7 +193,7 @@ const Footer = forwardRef((props, ref) => {
           className="footerBottom gap-2 gap-sm-4 d-flex flex-wrap align-items-center               justify-content-between justify-content-sm-between justify-content-md-between"
         >
           <p className="mb-2 copyrighttitle">
-            {appName ? appName : 'EduCrypt'} All Right Reserved, 2022
+            {appDetail?.title ? appDetail?.title : 'EduCrypt'} All Right Reserved, 2022
           </p>
           <div className="mb-2 flex-wrap foot-social">
             {footerLinks?.twitter_detail && (

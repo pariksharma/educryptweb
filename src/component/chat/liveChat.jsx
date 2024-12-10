@@ -170,7 +170,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
 
 
   const getChatData = () => {
-    // console.log("isPublic",isPublic)
+    console.log("isPublic",isPublic)
     const app_id = localStorage.getItem("appId");
     const user_id = localStorage.getItem("user_id")
     setUserId(localStorage.getItem("user_id"));
@@ -324,8 +324,8 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
       const user_id = localStorage.getItem("user_id");
       const userMobile = localStorage.getItem("userMobile")
       const curr_date = new Date();
-  
-      if (uploadedUrl) {
+      // console.log('msg', uploadedUrl.trim() !== "")
+      if (uploadedUrl.trim() !== "") {
         const messageNode = {
           course_id: course_id,
           date: convertToTimestamp(curr_date),
@@ -433,7 +433,7 @@ const LiveChat = ({ chat_node, course_id, isPublic }) => {
   const formatTime = (date) => {
     const cr_date = new Date(date);
     if (cr_date) {
-      return format(cr_date, "h:mm a");
+      return format(cr_date, "dd MMM yyyy h:mm a");
     }
   };
 

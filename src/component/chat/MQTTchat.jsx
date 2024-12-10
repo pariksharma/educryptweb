@@ -110,6 +110,7 @@ const MQTTchat = ({listenURL, port, settingNode, chatNode, course_id, isPublic, 
         else {
           console.log(JSON.parse(message.toString()))
           if(JSON.parse(message.toString())?.platform == '0' || JSON.parse(message.toString())?.id == user_id) {
+            console.log('chatData comes from here')
             setChatData((prevChatData) => [
             ...prevChatData, 
             JSON.parse(message.toString())

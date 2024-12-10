@@ -15,7 +15,7 @@ const LiveClassCard = ({ courseData, value }) => {
 
   const router = useRouter();
   const versionData = useSelector((state) => state.allCategory?.versionData);
-  // console.log('course', courseData)
+  console.log('course', courseData)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -65,7 +65,7 @@ const LiveClassCard = ({ courseData, value }) => {
   const handleWatch = (data) => {
     // console.log("data", data);
     if (data?.live_status == 2 && data?.video_type == 8) {
-      showErrorToast("Live class has been ended");
+      toast.error("Live class has been ended");
     } else {
       let playData = {
         vdc_id: data.vdc_id,

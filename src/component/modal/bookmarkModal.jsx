@@ -20,7 +20,7 @@ const BookmarkModal = (props) => {
     //   className="reviewModal"
     >
         <div className="BookmarkModal">
-            {/* <h4 className="m-0 ">Add Bookmark</h4> */}
+            <h4 className="mb-2 ">Add Bookmark</h4>
             <p className="modal-time">Time : {formatTime(props.time)}</p>
             <input 
                 type="text" 

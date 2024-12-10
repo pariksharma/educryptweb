@@ -7907,6 +7907,18 @@ h4.pdf_title {
     background-color: #FF7426 !important;
     border-radius: 10px !important;
   }
+
+  .radio-1 .progress-bar-fail, .radio-2 .progress-bar-fail {
+    background-color: red !important;
+    border-radius: 10px !important;
+  }
+
+  .radio-1 .progress-bar-correct, .radio-2 .progress-bar-correct {
+    background-color: green !important;
+    border-radius: 10px !important;
+  }
+
+
   .progress-percent-1 {
     color: #7D7D7D !important;
     font-size: var(--size-11) !important;
